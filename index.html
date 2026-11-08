@@ -1,1 +1,2879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VOXEL | Explore The Mod Galaxy</title>
+  <meta name="description" content="VOXEL — Explore The Mod Galaxy" />
+  <style>
+    :root {
+      --bg: #040b17;
+      --bg-2: #09172d;
+      --panel: rgba(10, 18, 34, 0.88);
+      --panel-2: rgba(18, 28, 50, 0.9);
+      --card: rgba(18, 24, 44, 0.9);
+      --line: rgba(122, 151, 255, 0.22);
+      --text: #edf4ff;
+      --muted: #a9b8d2;
+      --purple: #8b5cf6;
+      --purple-2: #a78bfa;
+      --cyan: #35d0ff;
+      --cyan-2: #6ee7ff;
+      --blue: #4ca7ff;
+      --green: #34d399;
+      --red: #fb7185;
+      --gold: #fbbf24;
+      --shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+    }
 
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(139, 92, 246, 0.18), transparent 25%),
+        radial-gradient(circle at 30% 30%, rgba(53, 208, 255, 0.12), transparent 20%),
+        linear-gradient(180deg, var(--bg), #020917 46%, #040b17);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    .container {
+      width: min(1200px, calc(100% - 36px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background: rgba(3, 8, 18, 0.66);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      min-height: 76px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 26px rgba(53, 208, 255, 0.5);
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+
+    .brand-text {
+      font-size: 1.1rem;
+      color: white;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      flex-wrap: wrap;
+    }
+
+    .nav a {
+      opacity: 0.88;
+      transition: opacity 0.2s ease;
+    }
+
+    .nav a:hover {
+      opacity: 1;
+      color: var(--text);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      background: rgba(255,255,255,0.02);
+      color: var(--text);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      color: #091520;
+      box-shadow: 0 18px 26px rgba(88, 138, 255, 0.24);
+    }
+
+    .btn-secondary {
+      border-color: var(--line);
+      background: rgba(255,255,255,0.02);
+      color: var(--text);
+    }
+
+    .btn-danger {
+      background: rgba(251, 113, 133, 0.12);
+      border-color: rgba(251, 113, 133, 0.38);
+      color: #ffc7d2;
+    }
+
+    .space {
+      padding: 42px 0 18px;
+    }
+
+    .hero {
+      position: relative;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(17, 24, 39, 0.8), rgba(11, 22, 42, 0.92)),
+        radial-gradient(circle at 20% 10%, rgba(53, 208, 255, 0.2), transparent 26%);
+      border-radius: 26px;
+      padding: 52px 34px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .hero::before, .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero::before {
+      width: 480px;
+      height: 480px;
+      right: -120px;
+      top: -160px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.2), transparent 60%);
+    }
+
+    .hero::after {
+      width: 360px;
+      height: 360px;
+      left: -80px;
+      bottom: -120px;
+      background: radial-gradient(circle, rgba(53, 208, 255, 0.18), transparent 65%);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 26px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(53, 208, 255, 0.3);
+      background: rgba(53, 208, 255, 0.06);
+      color: var(--cyan-2);
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(2.4rem, 4vw, 4.3rem);
+      line-height: 0.96;
+      letter-spacing: -0.05em;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 620px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .stat-row {
+      margin-top: 28px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .stat-pill {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      min-width: 120px;
+    }
+
+    .stat-pill strong {
+      display: block;
+      font-size: 1.3rem;
+      margin-bottom: 4px;
+    }
+
+    .stat-pill span {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .hero-panel {
+      position: relative;
+      display: grid;
+      gap: 16px;
+    }
+
+    .mini-card {
+      background: rgba(8, 18, 30, 0.86);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .mini-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .orbit {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 220px;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at center, rgba(53, 208, 255, 0.12), rgba(11, 18, 30, 0.6)),
+        linear-gradient(135deg, rgba(11, 15, 28, 0.7), rgba(18, 27, 46, 0.9));
+      border: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .orbit::before {
+      content: "";
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.8), rgba(53, 208, 255, 0.2) 60%, transparent 68%);
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.12); opacity: 1; }
+    }
+
+    .search-wrap {
+      margin-top: 32px;
+      background: rgba(11, 18, 31, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .search-wrap input {
+      flex: 1;
+      background: transparent;
+      color: var(--text);
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      padding: 10px 12px;
+    }
+
+    .search-btn {
+      min-width: 150px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin: 30px 0 18px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(1.6rem, 2vw, 2.3rem);
+      letter-spacing: -0.04em;
+    }
+
+    .section-head span {
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 22px;
+    }
+
+    .mod-card {
+      background: linear-gradient(180deg, rgba(15, 22, 38, 0.96), rgba(12, 17, 32, 0.94));
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.18s ease, border-color 0.2s ease;
+    }
+
+    .mod-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(53, 208, 255, 0.42);
+    }
+
+    .mod-banner {
+      height: 150px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .mod-icon-wrap {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.2);
+      background: rgba(5, 15, 28, 0.8);
+    }
+
+    .mod-icon-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .mod-card-body {
+      padding: 18px 18px 16px;
+    }
+
+    .mod-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(53, 208, 255, 0.08);
+      border: 1px solid rgba(53, 208, 255, 0.2);
+      color: var(--cyan-2);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .mod-type {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(139, 92, 246, 0.09);
+      color: var(--purple-2);
+      padding: 6px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .mod-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.35rem;
+      letter-spacing: -0.04em;
+    }
+
+    .mod-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-bottom: 12px;
+    }
+
+    .meta-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      display: inline-block;
+    }
+
+    .mod-description {
+      color: var(--muted);
+      line-height: 1.6;
+      min-height: 54px;
+      margin: 0 0 14px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .stat-bubble {
+      padding: 7px 9px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .mod-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mod-actions .btn {
+      padding: 10px 12px;
+      width: 100%;
+      flex: 1;
+    }
+
+    .category-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .category-chip {
+      padding: 11px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 600;
+    }
+
+    .category-chip:hover, .category-chip.active {
+      border-color: rgba(53, 208, 255, 0.4);
+      background: rgba(53, 208, 255, 0.08);
+      color: var(--text);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .view {
+      padding-bottom: 40px;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .panel {
+      background: rgba(12, 18, 30, 0.85);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel h3 {
+      margin: 0 0 16px;
+      font-size: 1.4rem;
+      letter-spacing: -0.04em;
+    }
+
+    .profile-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: #07131f;
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .metric-box {
+      padding: 18px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .metric-box strong {
+      display: block;
+      font-size: 1.7rem;
+      margin-bottom: 8px;
+    }
+
+    .metric-box span {
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .creator-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .creator-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--line);
+    }
+
+    .creator-item-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mini-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: #091520;
+      font-size: 0.82rem;
+    }
+
+    .mod-detail {
+      display: grid;
+      gap: 18px;
+    }
+
+    .detail-banner {
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      min-height: 260px;
+      background-size: cover;
+      background-position: center;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .detail-banner::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent, rgba(4, 11, 23, 0.52));
+    }
+
+    .detail-main {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 22px;
+    }
+
+    .detail-content {
+      background: rgba(12, 18, 30, 0.82);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .detail-side {
+      background: rgba(12, 18, 30, 0.82);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .detail-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .detail-header h2 {
+      font-size: clamp(2rem, 3vw, 3.2rem);
+      margin: 0;
+      letter-spacing: -0.06em;
+    }
+
+    .detail-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-bottom: 18px;
+    }
+
+    .detail-description {
+      color: var(--muted);
+      line-height: 1.8;
+      margin: 0 0 18px;
+    }
+
+    .screenshots {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .screenshot {
+      border-radius: 14px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--line);
+    }
+
+    .screenshot img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .stats-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .stats-list div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      color: var(--muted);
+    }
+
+    .stats-list div strong {
+      color: var(--text);
+    }
+
+    .author-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--line);
+    }
+
+    .portfolio-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(1, 7, 16, 0.82);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 120;
+      padding: 18px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease;
+    }
+
+    .modal.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      width: min(720px, 100%);
+      background: linear-gradient(180deg, rgba(11, 18, 31, 0.98), rgba(8, 15, 28, 0.95));
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+      max-height: 90vh;
+      overflow: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-size: 1.8rem;
+      letter-spacing: -0.05em;
+    }
+
+    .close-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      color: var(--text);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+    }
+
+    .auth-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .tab-btn.active {
+      background: rgba(53, 208, 255, 0.08);
+      border-color: rgba(53, 208, 255, 0.3);
+      color: var(--text);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      font-size: 0.84rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(7, 13, 22, 0.85);
+      color: var(--text);
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: rgba(53, 208, 255, 0.45);
+      box-shadow: 0 0 0 3px rgba(53, 208, 255, 0.12);
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .file-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      border: 1px dashed rgba(53, 208, 255, 0.46);
+      border-radius: 12px;
+      background: rgba(53, 208, 255, 0.04);
+      cursor: pointer;
+      color: var(--muted);
+      padding: 10px 12px;
+      text-align: center;
+    }
+
+    .progress-wrap {
+      margin-top: 12px;
+      display: none;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .progress-wrap.visible {
+      display: flex;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      border-radius: inherit;
+      transition: width 0.2s ease;
+    }
+
+    .status-banner {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+      color: var(--muted);
+      display: none;
+    }
+
+    .status-banner.visible {
+      display: block;
+    }
+
+    .status-banner.success {
+      border-color: rgba(52, 211, 153, 0.32);
+      background: rgba(52, 211, 153, 0.08);
+      color: #b5f8d9;
+    }
+
+    .status-banner.error {
+      border-color: rgba(251, 113, 133, 0.34);
+      background: rgba(251, 113, 133, 0.08);
+      color: #ffd0d8;
+    }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 22px;
+      background: rgba(14, 21, 33, 0.96);
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      min-width: 220px;
+      max-width: 350px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(18px);
+      pointer-events: none;
+      transition: all 0.2s ease;
+      z-index: 130;
+    }
+
+    .toast.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .empty-state {
+      padding: 24px 18px;
+      border: 1px dashed var(--line);
+      border-radius: 18px;
+      text-align: center;
+      color: var(--muted);
+      background: rgba(255,255,255,0.02);
+    }
+
+    @media (max-width: 920px) {
+      .hero-inner,
+      .detail-main,
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar-inner {
+        flex-wrap: wrap;
+        padding: 12px 0;
+      }
+
+      .nav {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">V</div>
+        <div class="brand-text">VOXEL</div>
+      </div>
+
+      <nav class="nav">
+        <a href="#" data-view="home">Home</a>
+        <a href="#" data-view="explore">Explore</a>
+        <a href="#" data-view="dashboard">Dashboard</a>
+        <a href="#" data-view="admin">Admin</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn btn-secondary" id="open-auth-btn">Login</button>
+        <button class="btn btn-primary" id="create-mod-btn">Upload Mod</button>
+        <button class="btn btn-danger hidden" id="logout-btn">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="home-view" class="view">
+      <div class="space">
+        <div class="hero">
+          <div class="hero-inner">
+            <div>
+              <div class="eyebrow">New Era of Minecraft Mods</div>
+              <h1>Explore The Mod Galaxy</h1>
+              <p>
+                Discover powerful creations, upload your own builds, and share your mods with the next generation of creators.
+              </p>
+
+              <div class="hero-actions">
+                <button class="btn btn-primary" id="hero-upload-btn">Upload your mod</button>
+                <button class="btn btn-secondary" id="hero-explore-btn">Explore mods</button>
+              </div>
+
+              <div class="stat-row">
+                <div class="stat-pill">
+                  <strong id="home-count">0</strong>
+                  <span>Mods</span>
+                </div>
+                <div class="stat-pill">
+                  <strong id="home-downloads">0</strong>
+                  <span>Downloads</span>
+                </div>
+                <div class="stat-pill">
+                  <strong id="home-creators">0</strong>
+                  <span>Creators</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-panel">
+              <div class="mini-card">
+                <div class="mini-card-header">
+                  <span>Featured Mod</span>
+                  <span id="feature-badge">Live</span>
+                </div>
+                <div class="orbit" id="featured-orbit"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="search-wrap">
+          <input id="global-search" type="text" placeholder="Search by name, description, category, author, or tags..." />
+          <button class="btn btn-primary search-btn" id="search-btn">Find Mods</button>
+        </div>
+
+        <div class="section-head">
+          <h2>Categories</h2>
+          <span>Explore by type</span>
+        </div>
+        <div class="category-row" id="categories-row"></div>
+
+        <div class="section-head">
+          <h2>Featured Mods</h2>
+          <span>Selected with flair</span>
+        </div>
+        <div class="card-grid" id="featured-grid"></div>
+
+        <div class="section-head">
+          <h2>Trending Mods</h2>
+          <span>Hot right now</span>
+        </div>
+        <div class="card-grid" id="trending-grid"></div>
+
+        <div class="section-head">
+          <h2>New Releases</h2>
+          <span>Fresh drops</span>
+        </div>
+        <div class="card-grid" id="new-grid"></div>
+
+        <div class="section-head">
+          <h2>Creator Spotlight</h2>
+          <span>Top creators</span>
+        </div>
+        <div class="card-grid" id="spotlight-grid"></div>
+      </div>
+    </section>
+
+    <section id="explore-view" class="view hidden">
+      <div class="space">
+        <div class="section-head">
+          <h2>Explore Mods</h2>
+          <span id="explore-results-label">All results</span>
+        </div>
+        <div class="card-grid" id="explore-grid"></div>
+      </div>
+    </section>
+
+    <section id="dashboard-view" class="view hidden">
+      <div class="space">
+        <div class="section-head">
+          <h2>Creator Dashboard</h2>
+          <span>Your studio</span>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="panel">
+            <div class="profile-card">
+              <div class="avatar" id="dashboard-avatar">U</div>
+              <div>
+                <h3 id="dashboard-name">Creator</h3>
+                <div id="dashboard-email" style="color: var(--muted);"></div>
+              </div>
+            </div>
+
+            <div class="metrics-row" id="dashboard-stats"></div>
+
+            <div class="section-head" style="margin-top: 26px;">
+              <h2 style="font-size: 1.2rem;">My Mods</h2>
+            </div>
+            <div id="my-mods-list" class="card-grid"></div>
+          </div>
+
+          <div class="panel">
+            <h3>Admin</h3>
+            <div id="admin-panel"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="mod-view" class="view hidden">
+      <div class="space">
+        <div id="mod-detail-shell"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="auth-modal" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="auth-title">Login</h3>
+        <button class="close-btn" id="close-auth-modal">&times;</button>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="tab-btn active" data-auth-tab="login">Login</button>
+        <button class="tab-btn" data-auth-tab="signup">Sign Up</button>
+        <button class="tab-btn" data-auth-tab="reset">Reset Password</button>
+      </div>
+
+      <form id="auth-form">
+        <div class="form-grid">
+          <div class="field full auth-field auth-signup-only hidden">
+            <label for="auth-username">Username</label>
+            <input id="auth-username" name="username" type="text" placeholder="Space explorer" />
+          </div>
+
+          <div class="field full">
+            <label for="auth-email">Email</label>
+            <input id="auth-email" name="email" type="email" placeholder="creator@voxel.gg" required />
+          </div>
+
+          <div class="field full">
+            <label for="auth-password">Password</label>
+            <input id="auth-password" name="password" type="password" placeholder="••••••••" required />
+          </div>
+
+          <div class="field full auth-field auth-reset-only hidden">
+            <label for="auth-reset-note">Password reset link will be sent to your email.</label>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap;">
+          <button class="btn btn-primary" type="submit" id="auth-submit-btn">Login</button>
+          <button class="btn btn-secondary" type="button" id="cancel-auth-btn">Cancel</button>
+        </div>
+
+        <div class="status-banner" id="auth-status"></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="mod-modal" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="mod-modal-title">Upload Mod</h3>
+        <button class="close-btn" id="close-mod-modal">&times;</button>
+      </div>
+
+      <form id="mod-form">
+        <div class="form-grid">
+          <div class="field">
+            <label for="mod-name">Mod Name</label>
+            <input id="mod-name" name="name" type="text" required />
+          </div>
+
+          <div class="field">
+            <label for="mod-category">Category</label>
+            <select id="mod-category" name="category" required>
+              <option value="">Select category</option>
+              <option value="Furniture">Furniture</option>
+              <option value="Utility">Utility</option>
+              <option value="Visual">Visual</option>
+              <option value="Mobs">Mobs</option>
+              <option value="Weapons">Weapons</option>
+              <option value="World Generation">World Generation</option>
+              <option value="Technology">Technology</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="mod-version">Version</label>
+            <input id="mod-version" name="version" type="text" value="1.0.0" required />
+          </div>
+
+          <div class="field">
+            <label for="mod-author">Author</label>
+            <input id="mod-author" name="author" type="text" required />
+          </div>
+
+          <div class="field full">
+            <label for="mod-description">Description</label>
+            <textarea id="mod-description" name="description" required></textarea>
+          </div>
+
+          <div class="field full">
+            <label for="mod-tags">Tags</label>
+            <input id="mod-tags" name="tags" type="text" placeholder="survival, functional, futuristic" />
+          </div>
+
+          <div class="field">
+            <label for="mod-icon">Icon Image</label>
+            <label class="file-label" for="mod-icon">Choose icon image</label>
+            <input id="mod-icon" name="icon" type="file" accept="image/*" style="display:none;" />
+          </div>
+
+          <div class="field">
+            <label for="mod-banner">Banner Image</label>
+            <label class="file-label" for="mod-banner">Choose banner image</label>
+            <input id="mod-banner" name="banner" type="file" accept="image/*" style="display:none;" />
+          </div>
+
+          <div class="field full">
+            <label for="mod-screenshots">Screenshots</label>
+            <label class="file-label" for="mod-screenshots">Choose screenshots</label>
+            <input id="mod-screenshots" name="screenshots" type="file" accept="image/*" multiple style="display:none;" />
+          </div>
+
+          <div class="field full">
+            <label for="mod-file">Mod File (.mcpack, .mcaddon, .zip)</label>
+            <label class="file-label" for="mod-file">Choose mod file</label>
+            <input id="mod-file" name="file" type="file" accept=".mcpack,.mcaddon,.zip" required style="display:none;" />
+          </div>
+        </div>
+
+        <div class="progress-wrap" id="mod-progress-wrap">
+          <div class="progress-bar"><div class="progress-fill" id="mod-progress-fill"></div></div>
+          <span id="mod-progress-text">0%</span>
+        </div>
+
+        <div class="status-banner" id="mod-status"></div>
+
+        <div style="display:flex; gap:12px; margin-top:18px; flex-wrap: wrap;">
+          <button class="btn btn-primary" type="submit" id="mod-submit-btn">Save Mod</button>
+          <button class="btn btn-secondary" type="button" id="cancel-mod-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabaseUrl = "https://iiwqjdcbpgggtdgvvepj.supabase.co";
+    const supabaseKey = "sb_publishable_xL0llFesqeefrm03syTQew_jby4FhJp";
+
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true
+      }
+    });
+
+    const state = {
+      session: null,
+      user: null,
+      profile: null,
+      mods: [],
+      selectedCategory: "all",
+      activeView: "home",
+      authMode: "login",
+      editingModId: null
+    };
+
+    const els = {
+      homeView: document.getElementById("home-view"),
+      exploreView: document.getElementById("explore-view"),
+      dashboardView: document.getElementById("dashboard-view"),
+      modView: document.getElementById("mod-view"),
+
+      openAuthBtn: document.getElementById("open-auth-btn"),
+      logoutBtn: document.getElementById("logout-btn"),
+      createModBtn: document.getElementById("create-mod-btn"),
+      heroUploadBtn: document.getElementById("hero-upload-btn"),
+      heroExploreBtn: document.getElementById("hero-explore-btn"),
+
+      authModal: document.getElementById("auth-modal"),
+      authTitle: document.getElementById("auth-title"),
+      authForm: document.getElementById("auth-form"),
+      authStatus: document.getElementById("auth-status"),
+      authSubmitBtn: document.getElementById("auth-submit-btn"),
+
+      modModal: document.getElementById("mod-modal"),
+      modForm: document.getElementById("mod-form"),
+      modStatus: document.getElementById("mod-status"),
+      modProgressWrap: document.getElementById("mod-progress-wrap"),
+      modProgressFill: document.getElementById("mod-progress-fill"),
+      modProgressText: document.getElementById("mod-progress-text"),
+
+      categoriesRow: document.getElementById("categories-row"),
+      featuredGrid: document.getElementById("featured-grid"),
+      trendingGrid: document.getElementById("trending-grid"),
+      newGrid: document.getElementById("new-grid"),
+      spotlightGrid: document.getElementById("spotlight-grid"),
+      exploreGrid: document.getElementById("explore-grid"),
+      myModsList: document.getElementById("my-mods-list"),
+      adminPanel: document.getElementById("admin-panel"),
+      modDetailShell: document.getElementById("mod-detail-shell"),
+      dashboardName: document.getElementById("dashboard-name"),
+      dashboardEmail: document.getElementById("dashboard-email"),
+      dashboardAvatar: document.getElementById("dashboard-avatar"),
+      exploreResultsLabel: document.getElementById("explore-results-label"),
+      homeCount: document.getElementById("home-count"),
+      homeDownloads: document.getElementById("home-downloads"),
+      homeCreators: document.getElementById("home-creators"),
+      toast: document.getElementById("toast"),
+      globalSearch: document.getElementById("global-search"),
+      searchBtn: document.getElementById("search-btn")
+    };
+
+    document.addEventListener("DOMContentLoaded", init);
+
+    async function init() {
+      bindGlobalEvents();
+      await loadSession();
+      await loadHome();
+    }
+
+    function bindGlobalEvents() {
+      document.querySelectorAll("[data-view]").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          const view = btn.getAttribute("data-view");
+          if (view === "dashboard") {
+            if (!state.user) {
+              openAuthModal("login");
+              return;
+            }
+          }
+          showView(view);
+        });
+      });
+
+      document.getElementById("open-auth-btn").addEventListener("click", () => openAuthModal("login"));
+      document.getElementById("close-auth-modal").addEventListener("click", closeAuthModal);
+      document.getElementById("cancel-auth-btn").addEventListener("click", closeAuthModal);
+      document.getElementById("logout-btn").addEventListener("click", handleLogout);
+      document.getElementById("create-mod-btn").addEventListener("click", () => openModModal("create"));
+      document.getElementById("hero-upload-btn").addEventListener("click", () => {
+        if (!state.user) {
+          openAuthModal("login");
+          return;
+        }
+        openModModal("create");
+      });
+      document.getElementById("hero-explore-btn").addEventListener("click", () => {
+        showView("explore");
+      });
+
+      document.querySelectorAll("[data-auth-tab]").forEach(button => {
+        button.addEventListener("click", () => {
+          const tab = button.getAttribute("data-auth-tab");
+          setAuthTab(tab);
+        });
+      });
+
+      document.getElementById("auth-form").addEventListener("submit", handleAuthSubmit);
+      document.getElementById("mod-form").addEventListener("submit", handleModSubmit);
+      document.getElementById("close-mod-modal").addEventListener("click", closeModModal);
+      document.getElementById("cancel-mod-btn").addEventListener("click", closeModModal);
+
+      document.getElementById("search-btn").addEventListener("click", () => {
+        const term = document.getElementById("global-search").value.trim();
+        searchMods(term);
+      });
+
+      document.getElementById("global-search").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          searchMods(document.getElementById("global-search").value.trim());
+        }
+      });
+
+      document.getElementById("mod-icon").addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const name = file.name;
+          const label = document.querySelector('label[for="mod-icon"]');
+          label.textContent = name.length > 25 ? name.slice(0, 25) + "..." : name;
+        }
+      });
+
+      document.getElementById("mod-banner").addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const name = file.name;
+          const label = document.querySelector('label[for="mod-banner"]');
+          label.textContent = name.length > 25 ? name.slice(0, 25) + "..." : name;
+        }
+      });
+
+      document.getElementById("mod-screenshots").addEventListener("change", (e) => {
+        const files = e.target.files;
+        const label = document.querySelector('label[for="mod-screenshots"]');
+        if (files && files.length) {
+          label.textContent = `${files.length} screenshot${files.length > 1 ? "s" : ""} selected`;
+        }
+      });
+
+      document.getElementById("mod-file").addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const label = document.querySelector('label[for="mod-file"]');
+          label.textContent = file.name;
+        }
+      });
+    }
+
+    async function loadSession() {
+      const { data: { session } } = await supabase.auth.getSession();
+      state.session = session;
+      state.user = session?.user || null;
+
+      if (state.user) {
+        await ensureProfile();
+      } else {
+        state.profile = null;
+      }
+
+      updateAuthUi();
+      updateDashboard();
+      await loadMods();
+    }
+
+    async function ensureProfile() {
+      if (!state.user) return;
+
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", state.user.id)
+        .single();
+
+      if (error && error.code !== "PGRST116") {
+        console.error(error);
+        return;
+      }
+
+      if (!data) {
+        const username = state.user.user_metadata?.username || (state.user.email || "creator").split("@")[0];
+        const payload = {
+          id: state.user.id,
+          email: state.user.email,
+          username,
+          full_name: username,
+          avatar_url: null,
+          is_admin: false
+        };
+        const result = await supabase.from("profiles").insert([payload]).select().single();
+        state.profile = result.data;
+      } else {
+        state.profile = data;
+      }
+
+      if (
+        state.user.email &&
+        state.user.email.trim().toLowerCase() === "admin@voxel.dev" &&
+        state.user.password !== undefined
+      ) {
+        // This is not a real property on user. We just keep the admin flow in the app.
+      }
+
+      if (state.profile && state.user.email && state.user.email.trim().toLowerCase() === "admin@voxel.dev") {
+        const { error: adminErr } = await supabase
+          .from("profiles")
+          .update({ is_admin: true, username: "voxeladmin" })
+          .eq("id", state.user.id);
+
+        if (!adminErr) {
+          state.profile.is_admin = true;
+        }
+      }
+    }
+
+    async function handleAuthSubmit(e) {
+      e.preventDefault();
+
+      const email = document.getElementById("auth-email").value.trim();
+      const password = document.getElementById("auth-password").value.trim();
+      const username = document.getElementById("auth-username")?.value.trim();
+
+      setAuthStatus("Loading...", false);
+
+      try {
+        if (state.authMode === "signup") {
+          const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              data: { username: username || email.split("@")[0] }
+            }
+          });
+
+          if (error) throw error;
+
+          const inserted = await ensureProfileForUser({
+            id: data.user.id,
+            email: data.user.email,
+            username: username || email.split("@")[0],
+            full_name: username || email.split("@")[0],
+            is_admin: (email || "").trim().toLowerCase() === "admin@voxel.dev"
+          });
+
+          if (inserted) {
+            setAuthStatus("Account created successfully. Please confirm if required.", true);
+          } else {
+            setAuthStatus("Account created. You can now log in.", true);
+          }
+
+          setTimeout(() => closeAuthModal(), 1200);
+        } else if (state.authMode === "login") {
+          const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+          if (error) throw error;
+
+          state.session = data.session;
+          state.user = data.user;
+
+          await ensureProfile();
+
+          setAuthStatus("Login successful.", true);
+          setTimeout(() => {
+            closeAuthModal();
+            updateAuthUi();
+            updateDashboard();
+            showView("dashboard");
+          }, 700);
+        } else if (state.authMode === "reset") {
+          const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + window.location.pathname
+          });
+
+          if (error) throw error;
+
+          setAuthStatus("Password reset email sent.", true);
+        }
+      } catch (error) {
+        console.error(error);
+        setAuthStatus(error.message || "Authentication failed.", false);
+      }
+    }
+
+    async function ensureProfileForUser(profileData) {
+      try {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", profileData.id)
+          .single();
+
+        if (error && error.code !== "PGRST116") {
+          return false;
+        }
+
+        if (!data) {
+          const { error: insertErr } = await supabase.from("profiles").insert([{
+            id: profileData.id,
+            email: profileData.email,
+            username: profileData.username,
+            full_name: profileData.full_name,
+            avatar_url: null,
+            is_admin: profileData.is_admin || false
+          }]);
+
+          if (insertErr) throw insertErr;
+        } else {
+          if (profileData.is_admin) {
+            await supabase.from("profiles").update({ is_admin: true }).eq("id", data.id);
+          }
+        }
+
+        return true;
+      } catch (error) {
+        console.error(error);
+        return false;
+      }
+    }
+
+    function setAuthStatus(message, success) {
+      const banner = els.authStatus;
+      banner.textContent = message;
+      banner.classList.add(success ? "success" : "error");
+      banner.classList.remove(success ? "error" : "success");
+      banner.classList.add("visible");
+    }
+
+    function updateAuthUi() {
+      const isLoggedIn = !!state.user;
+
+      els.openAuthBtn.textContent = isLoggedIn ? "Profile" : "Login";
+      els.logoutBtn.classList.toggle("hidden", !isLoggedIn);
+      els.createModBtn.classList.toggle("hidden", !isLoggedIn);
+      if (!isLoggedIn) {
+        els.createModBtn.textContent = "Upload Mod";
+      } else {
+        els.createModBtn.textContent = "Upload Mod";
+      }
+    }
+
+    async function handleLogout() {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        showToast("Logout failed");
+        return;
+      }
+
+      state.session = null;
+      state.user = null;
+      state.profile = null;
+
+      updateAuthUi();
+      updateDashboard();
+      showView("home");
+      showToast("Logged out.");
+    }
+
+    function setAuthTab(tab) {
+      state.authMode = tab;
+      document.querySelectorAll("[data-auth-tab]").forEach(button => {
+        button.classList.toggle("active", button.getAttribute("data-auth-tab") === tab);
+      });
+
+      const authTitle = document.getElementById("auth-title");
+      const submitBtn = document.getElementById("auth-submit-btn");
+
+      document.querySelectorAll(".auth-field").forEach(item => item.classList.add("hidden"));
+
+      if (tab === "login") {
+        authTitle.textContent = "Login";
+        submitBtn.textContent = "Login";
+        document.querySelector(".auth-signup-only")?.classList.add("hidden");
+      } else if (tab === "signup") {
+        authTitle.textContent = "Sign Up";
+        submitBtn.textContent = "Create Account";
+        document.querySelector(".auth-signup-only")?.classList.remove("hidden");
+      } else if (tab === "reset") {
+        authTitle.textContent = "Reset Password";
+        submitBtn.textContent = "Send Reset Link";
+        document.querySelector(".auth-reset-only")?.classList.remove("hidden");
+      }
+
+      setAuthStatus("", true);
+      document.getElementById("auth-email").focus();
+    }
+
+    function openAuthModal(mode = "login") {
+      setAuthTab(mode);
+      els.authModal.classList.add("visible");
+      els.authModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeAuthModal() {
+      els.authModal.classList.remove("visible");
+      els.authModal.setAttribute("aria-hidden", "true");
+      els.authForm.reset();
+      els.authStatus.classList.remove("visible");
+    }
+
+    function showView(viewName) {
+      state.activeView = viewName;
+
+      const views = ["home", "explore", "dashboard", "mod"];
+      views.forEach(name => {
+        const el = document.getElementById(name + "-view");
+        if (el) el.classList.toggle("hidden", name !== viewName);
+      });
+
+      if (viewName === "dashboard") {
+        updateDashboard();
+      }
+    }
+
+    async function loadHome() {
+      await loadMods();
+      renderCategories();
+      renderFeatured();
+      renderTrending();
+      renderNew();
+      renderCreatorSpotlight();
+      renderHomeStats();
+    }
+
+    async function loadMods() {
+      try {
+        const { data, error } = await supabase
+          .from("mods")
+          .select("*")
+          .eq("is_deleted", false)
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        state.mods = data || [];
+        renderExploreResults();
+      } catch (err) {
+        console.error(err);
+        showToast("Unable to load mods.");
+      }
+    }
+
+    function renderHomeStats() {
+      const totalMods = state.mods.length;
+      const totalDownloads = state.mods.reduce((sum, mod) => sum + (Number(mod.downloads) || 0), 0);
+      const creators = new Set(state.mods.map(mod => mod.creator_id)).size;
+
+      els.homeCount.textContent = totalMods;
+      els.homeDownloads.textContent = totalDownloads;
+      els.homeCreators.textContent = creators || 0;
+    }
+
+    function renderCategories() {
+      const categories = [
+        "Furniture", "Utility", "Visual", "Mobs", "Weapons", "World Generation", "Technology"
+      ];
+
+      els.categoriesRow.innerHTML = categories.map(category => `
+        <button class="category-chip ${state.selectedCategory === category ? "active" : ""}" data-category="${category}">
+          ${category}
+        </button>
+      `).join("");
+
+      els.categoriesRow.querySelectorAll(".category-chip").forEach(button => {
+        button.addEventListener("click", () => {
+          const category = button.dataset.category;
+          state.selectedCategory = state.selectedCategory === category ? "all" : category;
+          renderCategories();
+          if (state.selectedCategory === "all") {
+            showView("explore");
+            renderExploreResults();
+          } else {
+            showView("explore");
+            renderExploreResults(category);
+          }
+        });
+      });
+    }
+
+    function renderFeatured() {
+      const featured = state.mods.filter(mod => !!mod.featured).slice(0, 4);
+      if (!featured.length) {
+        els.featuredGrid.innerHTML = `<div class="empty-state">No featured mods at the moment.</div>`;
+        return;
+      }
+
+      els.featuredGrid.innerHTML = featured.map(mod => modCard(mod)).join("");
+      bindModCardActions();
+    }
+
+    function renderTrending() {
+      const trending = state.mods.filter(mod => !!mod.trending).slice(0, 4);
+      if (!trending.length) {
+        els.trendingGrid.innerHTML = `<div class="empty-state">No trending mods yet.</div>`;
+        return;
+      }
+
+      els.trendingGrid.innerHTML = trending.map(mod => modCard(mod)).join("");
+      bindModCardActions();
+    }
+
+    function renderNew() {
+      const newMods = [...state.mods].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 4);
+      if (!newMods.length) {
+        els.newGrid.innerHTML = `<div class="empty-state">No new mods yet.</div>`;
+        return;
+      }
+
+      els.newGrid.innerHTML = newMods.map(mod => modCard(mod)).join("");
+      bindModCardActions();
+    }
+
+    async function renderCreatorSpotlight() {
+      try {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .limit(6);
+
+        if (error) throw error;
+
+        const profiles = data || [];
+        const creators = profiles.slice(0, 4);
+
+        els.spotlightGrid.innerHTML = creators.map((creator, index) => {
+          const modCount = state.mods.filter(mod => mod.creator_id === creator.id).length;
+          const label = index === 0 ? "Featured Creator" : "Creator";
+          return `
+            <div class="mod-card">
+              <div class="mod-banner" style="background: linear-gradient(135deg, rgba(139,92,246,0.18), rgba(53,208,255,0.15));">
+                <div class="mod-icon-wrap" style="left: 20px; bottom: 20px; width: 62px; height: 62px;">
+                  <div class="avatar" style="width:100%;height:100%;border-radius:12px;border:none;">${(creator.username || creator.email || "C").charAt(0).toUpperCase()}</div>
+                </div>
+              </div>
+              <div class="mod-card-body">
+                <div class="mod-card-top">
+                  <span class="mod-type">${label}</span>
+                </div>
+                <h3>${escapeHtml(creator.username || creator.full_name || "Creator")}</h3>
+                <div class="mod-meta">
+                  <span>${modCount} mod${modCount === 1 ? "" : "s"}</span>
+                </div>
+                <p class="mod-description">${escapeHtml(creator.bio || "New creator building immersive worlds and tools.")}</p>
+                <div class="mod-actions">
+                  <button class="btn btn-secondary" data-view-creator="${creator.id}">View profile</button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        els.spotlightGrid.querySelectorAll("[data-view-creator]").forEach(btn => {
+          btn.addEventListener("click", async () => {
+            const creatorId = btn.getAttribute("data-view-creator");
+            const creatorMods = state.mods.filter(mod => mod.creator_id === creatorId);
+            if (creatorMods.length) {
+              showView("explore");
+              renderExploreResults("", creatorId);
+            }
+          });
+        });
+      } catch (err) {
+        console.error(err);
+        els.spotlightGrid.innerHTML = `<div class="empty-state">No creator spotlights available.</div>`;
+      }
+    }
+
+    function bindModCardActions() {
+      document.querySelectorAll("[data-open-mod]").forEach(button => {
+        button.addEventListener("click", async () => {
+          const modId = button.getAttribute("data-open-mod");
+          const mod = state.mods.find(item => item.id === modId);
+          if (mod) {
+            renderModDetail(mod);
+            showView("mod");
+          }
+        });
+      });
+
+      document.querySelectorAll("[data-download-mod]").forEach(button => {
+        button.addEventListener("click", async (event) => {
+          event.stopPropagation();
+          const modId = button.getAttribute("data-download-mod");
+          await downloadMod(modId);
+        });
+      });
+    }
+
+    function modCard(mod) {
+      const safeText = escapeHtml(mod.name || "Unnamed Mod");
+      const safeDescription = escapeHtml(mod.description || "No description provided.");
+      const safeAuthor = escapeHtml(mod.author || "Unknown");
+      const banner = mod.banner_url || "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80";
+      const icon = mod.icon_url || "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=400&q=80";
+      const tags = Array.isArray(mod.tags) ? mod.tags.slice(0, 2) : [];
+      const downloads = Number(mod.downloads || 0);
+      const rating = Number(mod.rating || 0);
+
+      return `
+        <article class="mod-card">
+          <div class="mod-banner" style="background-image: url('${banner}'); background-size: cover; background-position: center;">
+            <div class="mod-icon-wrap">
+              <img src="${icon}" alt="${safeText} icon" />
+            </div>
+          </div>
+          <div class="mod-card-body">
+            <div class="mod-card-top">
+              <span class="tag">${escapeHtml(mod.category || "General")}</span>
+              <span class="mod-type">${mod.featured ? "Featured" : mod.trending ? "Trending" : "Mod"}</span>
+            </div>
+
+            <h3>${safeText}</h3>
+
+            <div class="mod-meta">
+              <span>${safeAuthor}</span>
+              <span class="meta-dot"></span>
+              <span>${mod.version || "1.0.0"}</span>
+            </div>
+
+            <p class="mod-description">${safeDescription}</p>
+
+            <div class="stats-row">
+              <div class="stat-bubble">↓ ${downloads}</div>
+              <div class="stat-bubble">★ ${rating.toFixed(1)}</div>
+              <div class="stat-bubble">${mod.file_name || "Mod file"}</div>
+            </div>
+
+            <div class="mod-actions">
+              <button class="btn btn-primary" data-open-mod="${mod.id}">View Mod</button>
+              <button class="btn btn-secondary" data-download-mod="${mod.id}">Download</button>
+            </div>
+            ${tags.length ? `<div style="margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap;">${tags.map(item => `<span class="tag" style="padding: 5px 8px; font-size: 0.64rem;">${escapeHtml(item)}</span>`).join("")}</div>` : ""}
+          </div>
+        </article>
+      `;
+    }
+
+    function renderExploreResults(categoryFilter = null, creatorId = null) {
+      let filtered = [...state.mods];
+
+      if (categoryFilter) {
+        filtered = filtered.filter(mod => (mod.category || "").toLowerCase() === categoryFilter.toLowerCase());
+      }
+
+      if (creatorId) {
+        filtered = filtered.filter(mod => mod.creator_id === creatorId);
+      }
+
+      if (!filtered.length) {
+        els.exploreGrid.innerHTML = `<div class="empty-state">No mods found.</div>`;
+        els.exploreResultsLabel.textContent = `${categoryFilter ? categoryFilter : "All"} results`;
+        return;
+      }
+
+      els.exploreGrid.innerHTML = filtered.map(mod => modCard(mod)).join("");
+      els.exploreResultsLabel.textContent = `${filtered.length} result${filtered.length === 1 ? "" : "s"}`;
+      bindModCardActions();
+    }
+
+    function searchMods(term) {
+      if (!term) {
+        renderExploreResults();
+        showView("explore");
+        return;
+      }
+
+      const t = term.toLowerCase();
+      const filtered = state.mods.filter(mod => {
+        const haystack = [
+          mod.name || "",
+          mod.description || "",
+          mod.category || "",
+          mod.author || "",
+          ...(Array.isArray(mod.tags) ? mod.tags : [])
+        ].join(" ").toLowerCase();
+
+        return haystack.includes(t);
+      });
+
+      if (!filtered.length) {
+        els.exploreGrid.innerHTML = `<div class="empty-state">No mods match your search.</div>`;
+        els.exploreResultsLabel.textContent = "No search results";
+        showView("explore");
+        return;
+      }
+
+      els.exploreGrid.innerHTML = filtered.map(mod => modCard(mod)).join("");
+      els.exploreResultsLabel.textContent = `${filtered.length} search result${filtered.length === 1 ? "" : "s"}`;
+      showView("explore");
+      bindModCardActions();
+    }
+
+    async function updateDashboard() {
+      if (!state.user) {
+        els.dashboardName.textContent = "Login required";
+        els.dashboardEmail.textContent = "";
+        els.dashboardAvatar.textContent = "V";
+        els.adminPanel.innerHTML = `<div class="empty-state">Please login to access your dashboard.</div>`;
+        els.myModsList.innerHTML = `<div class="empty-state">You have not uploaded any mods yet.</div>`;
+        return;
+      }
+
+      const userEmail = state.user.email || "";
+      const initials = userEmail.split("@")[0].slice(0, 2).toUpperCase() || "V";
+      els.dashboardName.textContent = state.profile?.username || state.profile?.full_name || userEmail.split("@")[0];
+      els.dashboardEmail.textContent = userEmail;
+      els.dashboardAvatar.textContent = initials;
+
+      const myMods = state.mods.filter(mod => mod.creator_id === state.user.id);
+
+      const totalDownloads = myMods.reduce((sum, mod) => sum + Number(mod.downloads || 0), 0);
+      const totalFeatured = myMods.filter(mod => mod.featured).length;
+      const totalTrending = myMods.filter(mod => mod.trending).length;
+
+      const statHtml = `
+        <div class="metric-box">
+          <strong>${myMods.length}</strong>
+          <span>Mods</span>
+        </div>
+        <div class="metric-box">
+          <strong>${totalDownloads}</strong>
+          <span>Downloads</span>
+        </div>
+        <div class="metric-box">
+          <strong>${totalFeatured + totalTrending}</strong>
+          <span>Featured</span>
+        </div>
+      `;
+
+      els.dashboardStats.innerHTML = statHtml;
+
+      if (!myMods.length) {
+        els.myModsList.innerHTML = `<div class="empty-state">You have not uploaded any mods yet.</div>`;
+      } else {
+        els.myModsList.innerHTML = myMods.map(mod => `
+          <article class="mod-card">
+            <div class="mod-banner" style="background-image: url('${mod.banner_url || ""}'); background-size: cover; background-position: center;">
+              <div class="mod-icon-wrap">
+                <img src="${mod.icon_url || ""}" alt="${escapeHtml(mod.name || "Mod icon")}" />
+              </div>
+            </div>
+            <div class="mod-card-body">
+              <div class="mod-card-top">
+                <span class="tag">${escapeHtml(mod.category || "General")}</span>
+                <span class="mod-type">${mod.featured ? "Featured" : mod.trending ? "Trending" : "Mod"}</span>
+              </div>
+              <h3>${escapeHtml(mod.name || "Mod")}</h3>
+              <div class="mod-meta">
+                <span>${Number(mod.downloads || 0)} downloads</span>
+                <span class="meta-dot"></span>
+                <span>${mod.version || "1.0.0"}</span>
+              </div>
+              <p class="mod-description">${escapeHtml(mod.description || "No description.")}</p>
+              <div class="mod-actions">
+                <button class="btn btn-primary" data-open-mod="${mod.id}">View</button>
+                <button class="btn btn-secondary" data-edit-mod="${mod.id}">Edit</button>
+                <button class="btn btn-danger" data-delete-mod="${mod.id}">Delete</button>
+              </div>
+            </div>
+          </article>
+        `).join("");
+      }
+
+      bindDashboardActions();
+
+      const isAdmin = !!state.profile?.is_admin;
+      if (isAdmin) {
+        renderAdminPanel();
+      } else {
+        els.adminPanel.innerHTML = `
+          <div class="empty-state">
+            Admin controls are available for the admin account.
+            Use the admin login: admin@voxel.dev / voxeladmin
+          </div>
+        `;
+      }
+    }
+
+    function bindDashboardActions() {
+      document.querySelectorAll("[data-edit-mod]").forEach(button => {
+        button.addEventListener("click", () => {
+          const modId = button.getAttribute("data-edit-mod");
+          openModModal("edit", modId);
+        });
+      });
+
+      document.querySelectorAll("[data-delete-mod]").forEach(button => {
+        button.addEventListener("click", async () => {
+          const modId = button.getAttribute("data-delete-mod");
+          await deleteMod(modId);
+        });
+      });
+
+      document.querySelectorAll("[data-open-mod]").forEach(button => {
+        button.addEventListener("click", async () => {
+          const modId = button.getAttribute("data-open-mod");
+          const mod = state.mods.find(item => item.id === modId);
+          if (mod) {
+            renderModDetail(mod);
+            showView("mod");
+          }
+        });
+      });
+    }
+
+    async function renderAdminPanel() {
+      try {
+        const { data: profiles, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        const creators = profiles || [];
+        const creatorHtml = creators.map(profile => {
+          const modCount = state.mods.filter(mod => mod.creator_id === profile.id).length;
+          return `
+            <div class="creator-item">
+              <div class="creator-item-left">
+                <div class="mini-avatar">${(profile.username || profile.email || "C").charAt(0).toUpperCase()}</div>
+                <div>
+                  <strong>${escapeHtml(profile.username || "Creator")}</strong><br />
+                  <span style="color: var(--muted); font-size: 0.8rem;">${modCount} mod${modCount === 1 ? "" : "s"}</span>
+                </div>
+              </div>
+              <button class="btn btn-danger" data-remove-creator="${profile.id}">Remove</button>
+            </div>
+          `;
+        }).join("");
+
+        els.adminPanel.innerHTML = `
+          <div class="creator-list">
+            ${creatorHtml || `<div class="empty-state">No creators found.</div>`}
+          </div>
+        `;
+
+        els.adminPanel.querySelectorAll("[data-remove-creator]").forEach(button => {
+          button.addEventListener("click", async () => {
+            const creatorId = button.getAttribute("data-remove-creator");
+            await removeCreator(creatorId);
+          });
+        });
+      } catch (err) {
+        console.error(err);
+        els.adminPanel.innerHTML = `<div class="empty-state">Unable to load admin panel.</div>`;
+      }
+    }
+
+    async function removeCreator(creatorId) {
+      try {
+        const { error } = await supabase
+          .from("profiles")
+          .update({ is_banned: true, is_admin: false })
+          .eq("id", creatorId);
+
+        if (error) throw error;
+
+        await loadMods();
+        updateDashboard();
+        showToast("Creator removed.");
+      } catch (err) {
+        console.error(err);
+        showToast("Unable to remove creator.");
+      }
+    }
+
+    async function renderModDetail(mod) {
+      const authorProfile = await fetchProfileById(mod.creator_id);
+
+      const screenshots = Array.isArray(mod.screenshots) ? mod.screenshots : [];
+      const screenshotHtml = screenshots.length
+        ? screenshots.map(url => `
+            <div class="screenshot">
+              <img src="${url}" alt="${escapeHtml(mod.name || "Mod screenshot")}" />
+            </div>
+          `).join("")
+        : `<div class="empty-state">No screenshots added.</div>`;
+
+      const canManage = state.user && (state.user.id === mod.creator_id || state.profile?.is_admin);
+      const adminActions = state.profile?.is_admin ? `
+        <div class="portfolio-actions">
+          <button class="btn btn-secondary" data-toggle-feature="${mod.id}">
+            ${mod.featured ? "Remove from Featured" : "Feature Mod"}
+          </button>
+          <button class="btn btn-secondary" data-toggle-trending="${mod.id}">
+            ${mod.trending ? "Remove from Trending" : "Mark Trending"}
+          </button>
+        </div>
+      ` : "";
+
+      const manageButtons = canManage ? `
+        <div class="portfolio-actions">
+          <button class="btn btn-secondary" data-edit-mod="${mod.id}">Edit</button>
+          <button class="btn btn-danger" data-delete-mod="${mod.id}">Delete</button>
+        </div>
+      ` : "";
+
+      const banner = mod.banner_url || "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80";
+      const icon = mod.icon_url || "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80";
+
+      els.modDetailShell.innerHTML = `
+        <div class="mod-detail">
+          <div class="detail-banner" style="background-image: url('${banner}');"></div>
+
+          <div class="detail-main">
+            <div class="detail-content">
+              <div class="detail-header">
+                <div>
+                  <div class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">${escapeHtml(mod.category || "General")}</div>
+                  <h2>${escapeHtml(mod.name || "Untitled Mod")}</h2>
+                </div>
+                <img src="${icon}" alt="${escapeHtml(mod.name || "Mod icon")}" style="width:74px;height:74px;border-radius:16px;border:1px solid var(--line);object-fit:cover;" />
+              </div>
+
+              <div class="detail-meta">
+                <span>By ${escapeHtml(authorProfile?.username || mod.author || "Unknown")}</span>
+                <span class="meta-dot"></span>
+                <span>Version ${escapeHtml(mod.version || "1.0.0")}</span>
+                <span class="meta-dot"></span>
+                <span>${Number(mod.downloads || 0)} downloads</span>
+                <span class="meta-dot"></span>
+                <span>★ ${Number(mod.rating || 0).toFixed(1)}</span>
+              </div>
+
+              <p class="detail-description">${escapeHtml(mod.description || "No description.")}</p>
+
+              <div class="mod-actions" style="margin-bottom: 16px;">
+                <button class="btn btn-primary" data-download-mod="${mod.id}">Download</button>
+                <button class="btn btn-secondary" data-open-mod="${mod.id}">Open in Browse</button>
+              </div>
+
+              ${manageButtons}
+              ${adminActions}
+
+              <div class="screenshots">
+                ${screenshotHtml}
+              </div>
+            </div>
+
+            <aside class="detail-side">
+              <div class="author-box">
+                <div class="avatar" style="width:42px;height:42px;">${(authorProfile?.username || mod.author || "C").charAt(0).toUpperCase()}</div>
+                <div>
+                  <strong>${escapeHtml(authorProfile?.username || mod.author || "Creator")}</strong>
+                  <div style="color: var(--muted); font-size: 0.8rem;">${escapeHtml(authorProfile?.email || "Creator")}</div>
+                </div>
+              </div>
+
+              <div class="stats-list">
+                <div><span>Downloads</span><strong>${Number(mod.downloads || 0)}</strong></div>
+                <div><span>Rating</span><strong>${Number(mod.rating || 0).toFixed(1)}</strong></div>
+                <div><span>File Size</span><strong>${formatBytes(Number(mod.file_size || 0))}</strong></div>
+                <div><span>Category</span><strong>${escapeHtml(mod.category || "General")}</strong></div>
+                <div><span>Version</span><strong>${escapeHtml(mod.version || "1.0.0")}</strong></div>
+                <div><span>File</span><strong>${escapeHtml(mod.file_name || "mod-file")}</strong></div>
+              </div>
+
+              <div class="portfolio-actions">
+                <button class="btn btn-secondary" data-download-mod="${mod.id}">Download Mod</button>
+              </div>
+            </aside>
+          </div>
+        </div>
+      `;
+
+      bindModCardActions();
+      bindDetailActionButtons();
+    }
+
+    function bindDetailActionButtons() {
+      document.querySelectorAll("[data-edit-mod]").forEach(button => {
+        button.addEventListener("click", () => {
+          const modId = button.getAttribute("data-edit-mod");
+          openModModal("edit", modId);
+        });
+      });
+
+      document.querySelectorAll("[data-delete-mod]").forEach(button => {
+        button.addEventListener("click", async () => {
+          const modId = button.getAttribute("data-delete-mod");
+          await deleteMod(modId);
+        });
+      });
+
+      document.querySelectorAll("[data-toggle-feature]").forEach(button => {
+        button.addEventListener("click", async () => {
+          const modId = button.getAttribute("data-toggle-feature");
+          await toggleFeatured(modId);
+        });
+      });
+
+      document.querySelectorAll("[data-toggle-trending]").forEach(button => {
+        button.addEventListener("click", async () => {
+          const modId = button.getAttribute("data-toggle-trending");
+          await toggleTrending(modId);
+        });
+      });
+
+      document.querySelectorAll("[data-download-mod]").forEach(button => {
+        button.addEventListener("click", async (event) => {
+          event.stopPropagation();
+          const modId = button.getAttribute("data-download-mod");
+          await downloadMod(modId);
+        });
+      });
+
+      document.querySelectorAll("[data-open-mod]").forEach(button => {
+        button.addEventListener("click", async () => {
+          const modId = button.getAttribute("data-open-mod");
+          const mod = state.mods.find(item => item.id === modId);
+          if (mod) {
+            renderModDetail(mod);
+            showView("mod");
+          }
+        });
+      });
+    }
+
+    async function toggleFeatured(modId) {
+      const mod = state.mods.find(item => item.id === modId);
+      if (!mod) return;
+
+      const next = !mod.featured;
+
+      const { error } = await supabase
+        .from("mods")
+        .update({ featured: next })
+        .eq("id", modId);
+
+      if (error) {
+        showToast("Unable to update featured status.");
+        return;
+      }
+
+      await loadMods();
+      if (state.activeView === "mod") {
+        const updated = state.mods.find(item => item.id === modId);
+        if (updated) renderModDetail(updated);
+      }
+      showToast(next ? "Featured mod updated." : "Featured flag removed.");
+    }
+
+    async function toggleTrending(modId) {
+      const mod = state.mods.find(item => item.id === modId);
+      if (!mod) return;
+
+      const next = !mod.trending;
+
+      const { error } = await supabase
+        .from("mods")
+        .update({ trending: next })
+        .eq("id", modId);
+
+      if (error) {
+        showToast("Unable to update trending status.");
+        return;
+      }
+
+      await loadMods();
+      if (state.activeView === "mod") {
+        const updated = state.mods.find(item => item.id === modId);
+        if (updated) renderModDetail(updated);
+      }
+      showToast(next ? "Trending mod updated." : "Trending flag removed.");
+    }
+
+    async function fetchProfileById(id) {
+      if (!id) return null;
+      const { data, error } = await supabase.from("profiles").select("*").eq("id", id).single();
+      if (error) return null;
+      return data;
+    }
+
+    function openModModal(mode, modId = null) {
+      if (!state.user) {
+        openAuthModal("login");
+        return;
+      }
+
+      state.editingModId = modId;
+
+      const title = mode === "edit" ? "Edit Mod" : "Upload Mod";
+      document.getElementById("mod-modal-title").textContent = title;
+      document.getElementById("mod-submit-btn").textContent = mode === "edit" ? "Save Changes" : "Save Mod";
+
+      if (mode === "edit" && modId) {
+        const mod = state.mods.find(item => item.id === modId);
+        if (!mod) return;
+
+        populateModForm(mod);
+      } else {
+        document.getElementById("mod-form").reset();
+        document.querySelector('label[for="mod-icon"]').textContent = "Choose icon image";
+        document.querySelector('label[for="mod-banner"]').textContent = "Choose banner image";
+        document.querySelector('label[for="mod-screenshots"]').textContent = "Choose screenshots";
+        document.querySelector('label[for="mod-file"]').textContent = "Choose mod file";
+      }
+
+      els.modModal.classList.add("visible");
+      els.modModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeModModal() {
+      els.modModal.classList.remove("visible");
+      els.modModal.setAttribute("aria-hidden", "true");
+      els.modForm.reset();
+      els.modStatus.classList.remove("visible");
+      document.getElementById("mod-progress-wrap").classList.remove("visible");
+      document.getElementById("mod-progress-fill").style.width = "0%";
+      document.getElementById("mod-progress-text").textContent = "0%";
+      state.editingModId = null;
+    }
+
+    function populateModForm(mod) {
+      document.getElementById("mod-name").value = mod.name || "";
+      document.getElementById("mod-category").value = mod.category || "";
+      document.getElementById("mod-version").value = mod.version || "1.0.0";
+      document.getElementById("mod-author").value = mod.author || "";
+      document.getElementById("mod-description").value = mod.description || "";
+      document.getElementById("mod-tags").value = Array.isArray(mod.tags) ? mod.tags.join(", ") : "";
+    }
+
+    async function handleModSubmit(e) {
+      e.preventDefault();
+
+      if (!state.user) {
+        showToast("Please login first.");
+        return;
+      }
+
+      const isEdit = !!state.editingModId;
+      const name = document.getElementById("mod-name").value.trim();
+      const description = document.getElementById("mod-description").value.trim();
+      const category = document.getElementById("mod-category").value.trim();
+      const version = document.getElementById("mod-version").value.trim();
+      const author = document.getElementById("mod-author").value.trim();
+      const tagsRaw = document.getElementById("mod-tags").value.trim();
+      const tagList = tagsRaw ? tagsRaw.split(",").map(s => s.trim()).filter(Boolean) : [];
+
+      const iconFile = document.getElementById("mod-icon").files[0];
+      const bannerFile = document.getElementById("mod-banner").files[0];
+      const screenshotFiles = [...document.getElementById("mod-screenshots").files];
+      const modFile = document.getElementById("mod-file").files[0];
+
+      if (!name || !category || !version || !author || !description) {
+        setModStatus("Please complete all required fields.", false);
+        return;
+      }
+
+      if (!isEdit && !modFile) {
+        setModStatus("You must upload a mod file.", false);
+        return;
+      }
+
+      if (isEdit && !modFile && !iconFile && !bannerFile && !screenshotFiles.length) {
+        setModStatus("No changes were found to save.", false);
+        return;
+      }
+
+      try {
+        setModStatus("Uploading assets...", false);
+        showProgress(0);
+
+        let existingMod = null;
+        if (isEdit) {
+          const { data, error } = await supabase.from("mods").select("*").eq("id", state.editingModId).single();
+          if (error) throw error;
+          existingMod = data;
+        }
+
+        const payload = {
+          name,
+          description,
+          category,
+          version,
+          author,
+          tags: tagList,
+          creator_id: state.user.id,
+          is_deleted: false
+        };
+
+        // Upload mod file
+        let fileUrl = existingMod?.file_url || "";
+        let filePath = existingMod?.file_path || "";
+        let fileName = existingMod?.file_name || modFile?.name || "";
+        let fileSize = Number(existingMod?.file_size || 0);
+
+        if (modFile) {
+          const targetDir = "files";
+          const safeName = `mod_${Date.now()}_${slugify(modFile.name)}`;
+          const storagePath = `${targetDir}/${safeName}`;
+
+          const { data: uploadData, error: uploadError } = await supabase.storage.from("mods").upload(storagePath, modFile, {
+            upsert: true,
+            contentType: modFile.type || "application/octet-stream",
+            cacheControl: "3600",
+            onUploadProgress: (progress) => {
+              const pct = Math.round((progress.loaded / progress.total) * 90);
+              showProgress(pct);
+            }
+          });
+
+          if (uploadError) throw uploadError;
+          const publicUrl = supabase.storage.from("mods").getPublicUrl(storagePath).data.publicUrl;
+
+          fileUrl = publicUrl;
+          filePath = storagePath;
+          fileName = modFile.name;
+          fileSize = modFile.size || 0;
+        }
+
+        // Upload icon
+        let iconUrl = existingMod?.icon_url || "";
+        let iconPath = existingMod?.icon_path || "";
+        if (iconFile) {
+          const targetDir = "icons";
+          const safeName = `icon_${Date.now()}_${slugify(iconFile.name)}`;
+          const storagePath = `${targetDir}/${safeName}`;
+
+          const { data: uploadData, error: uploadError } = await supabase.storage.from("mods").upload(storagePath, iconFile, {
+            upsert: true,
+            contentType: iconFile.type || "image/png",
+            cacheControl: "3600",
+            onUploadProgress: (progress) => {
+              const pct = Math.round((progress.loaded / progress.total) * 100);
+              showProgress(Math.min(100, pct));
+            }
+          });
+
+          if (uploadError) throw uploadError;
+          const publicUrl = supabase.storage.from("mods").getPublicUrl(storagePath).data.publicUrl;
+          iconUrl = publicUrl;
+          iconPath = storagePath;
+        }
+
+        // Upload banner
+        let bannerUrl = existingMod?.banner_url || "";
+        let bannerPath = existingMod?.banner_path || "";
+        if (bannerFile) {
+          const targetDir = "banners";
+          const safeName = `banner_${Date.now()}_${slugify(bannerFile.name)}`;
+          const storagePath = `${targetDir}/${safeName}`;
+
+          const { error: uploadError } = await supabase.storage.from("mods").upload(storagePath, bannerFile, {
+            upsert: true,
+            contentType: bannerFile.type || "image/png",
+            cacheControl: "3600"
+          });
+
+          if (uploadError) throw uploadError;
+
+          const publicUrl = supabase.storage.from("mods").getPublicUrl(storagePath).data.publicUrl;
+          bannerUrl = publicUrl;
+          bannerPath = storagePath;
+        }
+
+        // Upload screenshots
+        let screenshotUrls = Array.isArray(existingMod?.screenshots) ? existingMod.screenshots : [];
+        let screenshotPaths = Array.isArray(existingMod?.screenshot_paths) ? existingMod.screenshot_paths : [];
+
+        if (screenshotFiles.length) {
+          const uploaded = [];
+          const uploadedPaths = [];
+
+          for (const file of screenshotFiles) {
+            const safeName = `shot_${Date.now()}_${Math.random().toString(36).slice(2, 8)}_${slugify(file.name)}`;
+            const storagePath = `screenshots/${safeName}`;
+
+            const { error: uploadError } = await supabase.storage.from("mods").upload(storagePath, file, {
+              upsert: true,
+              contentType: file.type || "image/png",
+              cacheControl: "3600"
+            });
+
+            if (uploadError) throw uploadError;
+
+            const publicUrl = supabase.storage.from("mods").getPublicUrl(storagePath).data.publicUrl;
+            uploaded.push(publicUrl);
+            uploadedPaths.push(storagePath);
+          }
+
+          screenshotUrls = uploaded;
+          screenshotPaths = uploadedPaths;
+        }
+
+        // Ensure if editing but no new image files are selected, preserve existing
+        if (isEdit) {
+          iconUrl = iconUrl || existingMod?.icon_url || "";
+          iconPath = iconPath || existingMod?.icon_path || "";
+          bannerUrl = bannerUrl || existingMod?.banner_url || "";
+          bannerPath = bannerPath || existingMod?.banner_path || "";
+          screenshotUrls = screenshotUrls.length ? screenshotUrls : (Array.isArray(existingMod?.screenshots) ? existingMod.screenshots : []);
+          screenshotPaths = screenshotPaths.length ? screenshotPaths : (Array.isArray(existingMod?.screenshot_paths) ? existingMod.screenshot_paths : []);
+        }
+
+        const modRecord = {
+          ...payload,
+          creator_id: state.user.id,
+          icon_url: iconUrl,
+          icon_path: iconPath,
+          banner_url: bannerUrl,
+          banner_path: bannerPath,
+          screenshots: screenshotUrls,
+          screenshot_paths: screenshotPaths,
+          file_url: fileUrl,
+          file_path: filePath,
+          file_name: fileName,
+          file_size: fileSize,
+          downloads: Number(existingMod?.downloads || 0),
+          rating: Number(existingMod?.rating || 0),
+          featured: !!existingMod?.featured,
+          trending: !!existingMod?.trending
+        };
+
+        if (isEdit) {
+          const { error } = await supabase.from("mods").update(modRecord).eq("id", state.editingModId);
+          if (error) throw error;
+          showToast("Mod updated successfully.");
+        } else {
+          const { error } = await supabase.from("mods").insert([modRecord]).select().single();
+          if (error) throw error;
+          showToast("Mod uploaded successfully.");
+        }
+
+        await loadMods();
+        updateDashboard();
+        closeModModal();
+        renderHomeStats();
+      } catch (error) {
+        console.error(error);
+        setModStatus(error.message || "Unable to save mod.", false);
+      } finally {
+        hideProgress();
+      }
+    }
+
+    async function downloadMod(modId) {
+      const mod = state.mods.find(item => item.id === modId);
+      if (!mod) return;
+
+      if (!mod.file_url) {
+        showToast("This mod has no valid file.");
+        return;
+      }
+
+      const link = document.createElement("a");
+      link.href = mod.file_url;
+      link.download = mod.file_name || "voxel-mod";
+      link.target = "_blank";
+      link.rel = "noopener";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      const nextCount = Number(mod.downloads || 0) + 1;
+      const { error } = await supabase
+        .from("mods")
+        .update({ downloads: nextCount })
+        .eq("id", modId);
+
+      if (!error) {
+        await loadMods();
+        renderHomeStats();
+        renderFeatured();
+        renderTrending();
+        renderNew();
+        if (state.activeView === "mod") {
+          const updated = state.mods.find(item => item.id === modId);
+          if (updated) renderModDetail(updated);
+        }
+      }
+
+      showToast("Download started.");
+    }
+
+    async function deleteMod(modId) {
+      if (!confirm("Delete this mod? This action cannot be undone.")) return;
+
+      try {
+        const { data: mod, error: selectError } = await supabase.from("mods").select("*").eq("id", modId).single();
+        if (selectError) throw selectError;
+
+        const deletePaths = [
+          mod.icon_path,
+          mod.banner_path,
+          ...(Array.isArray(mod.screenshot_paths) ? mod.screenshot_paths : []),
+          mod.file_path
+        ].filter(Boolean);
+
+        if (deletePaths.length) {
+          const { error: storageErr } = await supabase.storage.from("mods").remove(deletePaths);
+          if (storageErr) {
+            console.warn("Storage delete failed:", storageErr);
+          }
+        }
+
+        const { error } = await supabase.from("mods").update({ is_deleted: true }).eq("id", modId);
+        if (error) throw error;
+
+        await loadMods();
+        updateDashboard();
+        showView("dashboard");
+        showToast("Mod deleted.");
+      } catch (err) {
+        console.error(err);
+        showToast("Unable to delete mod.");
+      }
+    }
+
+    function setModStatus(message, success) {
+      const banner = els.modStatus;
+      banner.textContent = message;
+      banner.classList.add(success ? "success" : "error");
+      banner.classList.remove(success ? "error" : "success");
+      banner.classList.add("visible");
+    }
+
+    function showProgress(percent) {
+      const wrapper = document.getElementById("mod-progress-wrap");
+      wrapper.classList.add("visible");
+      const fill = document.getElementById("mod-progress-fill");
+      const text = document.getElementById("mod-progress-text");
+
+      fill.style.width = `${percent}%`;
+      text.textContent = `${percent}%`;
+    }
+
+    function hideProgress() {
+      const wrapper = document.getElementById("mod-progress-wrap");
+      wrapper.classList.remove("visible");
+      const fill = document.getElementById("mod-progress-fill");
+      const text = document.getElementById("mod-progress-text");
+      fill.style.width = "0%";
+      text.textContent = "0%";
+    }
+
+    function showToast(message) {
+      els.toast.textContent = message;
+      els.toast.classList.add("visible");
+      clearTimeout(showToast.timeoutId);
+      showToast.timeoutId = setTimeout(() => {
+        els.toast.classList.remove("visible");
+      }, 2200);
+    }
+
+    function normalizeText(value) {
+      return String(value || "").trim();
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function slugify(value) {
+      return String(value || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9._-]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .slice(0, 120);
+    }
+
+    function formatBytes(bytes) {
+      if (!bytes) return "0 B";
+      const units = ["B", "KB", "MB", "GB"];
+      let value = bytes;
+      let index = 0;
+      while (value >= 1024 && index < units.length - 1) {
+        value /= 1024;
+        index++;
+      }
+      return `${value.toFixed(value >= 10 || index === 0 ? 0 : 1)} ${units[index]}`;
+    }
+
+    async function ensureAdminAccount() {
+      const email = "admin@voxel.dev";
+      const password = "voxeladmin";
+
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        const { data: signUpData, error: signUpErr } = await supabase.auth.signUp({
+          email,
+          password,
+          options: { data: { username: "voxeladmin" } }
+        });
+        if (signUpErr) {
+          console.error(signUpErr);
+          return;
+        }
+        state.user = signUpData.user;
+        state.session = signUpData.session;
+        await ensureProfileForUser({
+          id: signUpData.user.id,
+          email: signUpData.user.email,
+          username: "voxeladmin",
+          full_name: "Voxel Admin",
+          is_admin: true
+        });
+      } else {
+        state.user = data.user;
+        state.session = data.session;
+        await ensureProfile();
+      }
+    }
+
+    window.addEventListener("load", async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          // The admin account can be created by the user from the Auth modal using:
+          // email: admin@voxel.dev
+          // password: voxeladmin
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>
