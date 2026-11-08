@@ -2,233 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#080b1b">
-  <title>VOXEL — Explore The Mod Galaxy</title>
-  <meta name="description" content="Discover, download, and share Minecraft Bedrock mods with VOXEL.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101426">
+  <meta name="description" content="Discover and download Minecraft Bedrock mods shared by the community.">
+  <title>VOXEL — Mod Sharing</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    :root{--bg:#080b1b;--panel:#10152a;--panel2:#151c35;--line:#232b49;--muted:#9ba6c7;--white:#f5f7ff;--cyan:#5be7ff;--purple:#a178ff;--pink:#ef79d6;--radius:18px}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:'DM Sans',sans-serif;background:radial-gradient(circle at top,#121b35,#080b1b 40%);color:var(--white)}a{text-decoration:none;color:inherit}img{display:block;max-width:100%}.wrap{width:min(1200px,calc(100vw - 32px));margin:0 auto}.topbar{position:sticky;top:0;z-index:30;background:rgba(8,11,27,.8);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06)}.nav{display:flex;align-items:center;justify-content:space-between;padding:18px 0}.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}.brandmark{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#091426;font-size:14px}.navlinks{display:flex;gap:22px;color:var(--muted);font-size:14px}.navlinks a:hover{color:var(--white)}.hero{padding:72px 0 36px}.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:32px}.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);opacity:.9}.pulse{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 0 rgba(91,231,255,.7);animation:pulse 1.6s infinite}.gradient{background:linear-gradient(135deg,var(--cyan),var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}.hero h1{font-size:clamp(3rem,8vw,6rem);line-height:.96;margin:16px 0}.hero p{color:var(--muted);font-size:1.12rem;line-height:1.7}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}.btn,.ghost,.textlink{border:1px solid var(--line);background:#111a30;color:var(--white);padding:12px 18px;border-radius:999px;font-weight:700;cursor:pointer}.btn{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#07101c;border:none}.ghost{background:transparent}.hero-visual{background:linear-gradient(180deg,#1d2553,#10152a);border:1px solid var(--line);border-radius:28px;padding:18px}.art{height:400px;border-radius:22px;background:linear-gradient(160deg,#141e3d,#0a111f 65%);position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.08)}.art:before,.art:after{content:"";position:absolute;border-radius:50%}.art:before{width:220px;height:220px;background:radial-gradient(circle,rgba(91,231,255,.8),transparent 70%);right:-20px;top:-30px}.art:after{width:180px;height:180px;background:radial-gradient(circle,rgba(161,120,255,.8),transparent 70%);left:-20px;bottom:-30px}.mini-card{position:absolute;bottom:18px;left:18px;right:18px;background:rgba(11,15,27,.8);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:14px 16px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.stat{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px}.stat strong{display:block;font-size:1.8rem}.section{padding:30px 0 20px}.secthead{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:18px}.secthead h2{margin:8px 0 0;font-size:clamp(1.8rem,3vw,2.5rem)}.catgrid,.modsgrid,.feature-grid{display:grid;gap:18px}.catgrid{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}.cat{display:flex;align-items:center;gap:12px;padding:18px 16px;border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),#0f1529);border-radius:18px;color:var(--white);font-size:1rem;cursor:pointer}.cat span{font-size:1.5rem}.cat.active{outline:1px solid rgba(91,231,255,.6);box-shadow:inset 0 0 0 1px rgba(91,231,255,.3)}.modsgrid,.feature-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:22px;overflow:hidden;transition:transform .15s ease,border-color .15s ease}.card:hover{transform:translateY(-2px);border-color:rgba(91,231,255,.45)}.cardimg{position:relative;height:150px;overflow:hidden}.cardimg img{width:100%;height:100%;object-fit:cover}.cardbody{padding:16px}.meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.8rem}.pill{padding:6px 10px;border-radius:999px;background:rgba(91,231,255,.08);color:var(--cyan);border:1px solid rgba(91,231,255,.2)}.card h3{margin:12px 0 6px;font-size:1.1rem}.meta-row{display:flex;align-items:center;justify-content:space-between;color:var(--muted);margin-top:10px}.rating{display:flex;align-items:center;gap:6px}.star{color:#ffd76a}.empty{padding:26px;border:1px dashed var(--line);border-radius:18px;color:var(--muted);text-align:center}.modalback{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(3,6,12,.7);padding:18px;z-index:60}.modalback.open{display:flex}.modal{width:min(860px,100%);max-height:86vh;overflow:auto;border-radius:22px;background:#0f1529;border:1px solid var(--line);box-shadow:0 18px 60px rgba(0,0,0,.45)}.modalhead{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--line)}.close{border:none;background:transparent;color:var(--white);font-size:2rem;cursor:pointer}.modalcontent{padding:18px 20px}.mod-detail{display:grid;grid-template-columns:220px 1fr;gap:20px}.mod-detail img{width:100%;height:220px;object-fit:cover;border-radius:18px;border:1px solid var(--line)}.mod-info h3{margin:0 0 10px;font-size:2rem}.mod-info p{color:var(--muted);line-height:1.7}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.action-btn{padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--white);cursor:pointer}.action-btn.primary{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#061019;border:none}.comment{padding:12px;border:1px solid var(--line);border-radius:12px;background:#121b2e;margin-top:10px}.comment b{display:block}.comment small{color:var(--muted)}.comment p{margin:8px 0 0;color:#dfe8ff}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:6px}.field input,.field textarea,.field select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:#0b1222;color:var(--white)}.field textarea{min-height:100px;resize:vertical}.field.full{grid-column:1 / -1}.hint{color:var(--muted);font-size:.92rem}.toast{position:fixed;right:20px;bottom:20px;padding:12px 14px;border-radius:12px;background:#0f172a;border:1px solid var(--line);color:var(--white);opacity:0;transform:translateY(12px);transition:.2s ease;z-index:80}.toast.show{opacity:1;transform:translateY(0)}.footer{padding:30px 0 60px;border-top:1px solid rgba(255,255,255,.06);color:var(--muted)}.footerin{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}.@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(91,231,255,.7)}70%{box-shadow:0 0 0 18px rgba(91,231,255,0)}100%{box-shadow:0 0 0 0 rgba(91,231,255,0)}}
+    :root{color-scheme:dark;--bg:#0b0e1a;--panel:#141a2b;--panel2:#1a2238;--line:#2b3551;--text:#f4f6ff;--muted:#aab4ce;--accent:#77e4f2;--danger:#ff8194}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}.wrap{width:min(1120px,calc(100% - 32px));margin:auto}.bar{position:sticky;top:0;z-index:5;background:#0b0e1aee;border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}.nav{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px}.logo{font-size:1.35rem;font-weight:850;letter-spacing:.13em;color:var(--text);text-decoration:none}.logo span{color:var(--accent)}.button{border:1px solid var(--line);border-radius:10px;padding:10px 15px;background:var(--panel2);color:var(--text);font-weight:700}.button:hover{border-color:var(--accent)}.primary{background:var(--accent);border-color:var(--accent);color:#07141a}.danger{color:var(--danger)}.hero{padding:48px 0 34px}.hero h1{font-size:clamp(2.2rem,6vw,4rem);line-height:1.04;margin:0 0 12px}.hero p,.muted{color:var(--muted)}.hero p{margin:0 0 22px}.controls{display:flex;gap:10px;flex-wrap:wrap}.search{flex:1;min-width:220px}.field, .search, select, textarea{border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:#0e1423;color:var(--text)}.search:focus,.field:focus,textarea:focus,select:focus{outline:2px solid #77e4f255;border-color:var(--accent)}.section{padding:22px 0 38px}.section-title{display:flex;align-items:baseline;justify-content:space-between;gap:12px}.section h2{margin:0 0 16px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}.card{border:1px solid var(--line);border-radius:16px;background:var(--panel);overflow:hidden;display:flex;flex-direction:column}.cover{height:150px;background:#202944;object-fit:cover;width:100%}.card-content{padding:15px;display:flex;flex-direction:column;flex:1}.identity{display:flex;gap:12px;align-items:center}.icon{width:54px;height:54px;object-fit:cover;border-radius:12px;background:var(--panel2);flex:none}.title{margin:0;font-size:1.1rem;overflow-wrap:anywhere}.description{color:var(--muted);margin:12px 0;white-space:pre-wrap;overflow-wrap:anywhere;flex:1}.meta{font-size:.88rem;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}.card-actions{display:flex;gap:8px;margin-top:14px}.card-actions .button{flex:1}.empty{padding:30px;text-align:center;border:1px dashed var(--line);border-radius:14px;color:var(--muted);grid-column:1/-1}.notice{padding:12px 14px;border:1px solid var(--line);border-radius:10px;color:var(--muted);margin:15px 0}.error{color:var(--danger)}.modal{position:fixed;inset:0;z-index:10;background:#000b;display:none;align-items:center;justify-content:center;padding:16px}.modal.open{display:flex}.dialog{width:min(720px,100%);max-height:92vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:16px}.dialog-head{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}.dialog-head h2{font-size:1.25rem;margin:0}.x{font-size:1.6rem;border:0;background:none;color:var(--muted)}.dialog-body{padding:18px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form-field{display:flex;flex-direction:column;gap:6px}.form-field.full{grid-column:1/-1}.form-field label{font-weight:650}.form-field input,.form-field textarea,.form-field select{width:100%}.form-field textarea{min-height:120px;resize:vertical}.help{font-size:.85rem;color:var(--muted)}.detail-banner{width:100%;max-height:300px;object-fit:cover;border-radius:12px;background:var(--panel2)}.detail-top{display:flex;align-items:center;gap:15px;margin:16px 0}.detail-top .icon{width:72px;height:72px}.detail-description{white-space:pre-wrap;overflow-wrap:anywhere;color:var(--muted)}.toast{position:fixed;bottom:18px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--panel2);border:1px solid var(--line);padding:11px 16px;border-radius:10px;z-index:20;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}footer{border-top:1px solid var(--line);padding:24px 0;color:var(--muted);margin-top:20px}@media(max-width:600px){.form-grid{grid-template-columns:1fr}.form-field.full{grid-column:auto}.hero{padding-top:36px}}
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="wrap nav">
-      <a href="#home" class="brand"><span class="brandmark">✦</span> VOXEL</a>
-      <nav class="navlinks">
-        <a href="#mods">Explore</a>
-        <a href="#categories">Categories</a>
-        <a href="#featured">Featured</a>
-        <button class="ghost" id="adminBtn" type="button">Admin</button>
-      </nav>
-    </div>
-  </header>
-
-  <main id="home">
-    <section class="hero">
-      <div class="wrap">
-        <div>
-          <span class="eyebrow"><i class="pulse"></i> THE COMMUNITY MOD UNIVERSE</span>
-          <h1>Explore The<br><span class="gradient">Mod Galaxy</span></h1>
-          <p>Discover, download, and share Minecraft Bedrock mods built by creators across the community.</p>
-          <div class="hero-actions">
-            <a class="btn" href="#mods">Explore Mods</a>
-            <button class="ghost" id="refreshBtn" type="button">Refresh</button>
-          </div>
-          <div class="stats">
-            <div class="stat"><strong id="statMods">0</strong><span>Mods</span></div>
-            <div class="stat"><strong id="statDownloads">0</strong><span>Downloads</span></div>
-            <div class="stat"><strong id="statTrend">New</strong><span>Galaxy</span></div>
-          </div>
-        </div>
-        <div class="hero-visual">
-          <div class="art">
-            <div class="mini-card">
-              <div class="meta"><span>Featured mod</span><span id="featureTag">Loading</span></div>
-              <h3 id="featureName">VOXEL</h3>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section wrap" id="featured">
-      <div class="secthead">
-        <div>
-          <span class="eyebrow">HAND-PICKED DISCOVERY</span>
-          <h2>Mod of the Week</h2>
-        </div>
-      </div>
-      <div id="weekly" class="feature-grid"></div>
-    </section>
-
-    <section class="section wrap" id="categories">
-      <div class="secthead">
-        <div>
-          <span class="eyebrow">FIND YOUR UNIVERSE</span>
-          <h2>Browse Categories</h2>
-        </div>
-      </div>
-      <div class="catgrid" id="catGrid"></div>
-    </section>
-
-    <section class="section wrap" id="mods">
-      <div class="secthead">
-        <div>
-          <span class="eyebrow">COMMUNITY CREATIONS</span>
-          <h2 id="listingTitle">Explore Mods</h2>
-          <p id="resultCount">Loading the galaxy…</p>
-        </div>
-        <select id="sortSelect" class="ghost" style="padding:12px 16px;border-radius:999px;">
-          <option value="downloads">Most downloads</option>
-          <option value="rating">Top rated</option>
-          <option value="newest">Newest</option>
-          <option value="trending">Trending</option>
-        </select>
-      </div>
-      <div class="modsgrid" id="modsGrid"></div>
-    </section>
-
-    <section class="section wrap">
-      <div class="secthead">
-        <div>
-          <span class="eyebrow">COMMUNITY FAVORITES</span>
-          <h2>Trending Mods</h2>
-        </div>
-      </div>
-      <div class="feature-grid" id="trendingGrid"></div>
-    </section>
-
-    <section class="section wrap">
-      <div class="secthead">
-        <div>
-          <span class="eyebrow">FRESH FROM THE GALAXY</span>
-          <h2>New Mods</h2>
-        </div>
-      </div>
-      <div class="feature-grid" id="newGrid"></div>
-    </section>
-
-    <section class="section wrap">
-      <div class="secthead">
-        <div>
-          <span class="eyebrow">MOST LOVED</span>
-          <h2>Community Favorites</h2>
-        </div>
-      </div>
-      <div class="feature-grid" id="favoriteGrid"></div>
-    </section>
+  <header class="bar"><div class="wrap nav"><a class="logo" href="#">VOX<span>EL</span></a><button class="button primary" id="uploadBtn" type="button">Upload a mod</button></div></header>
+  <main class="wrap">
+    <section class="hero"><h1>Find your next<br><span style="color:var(--accent)">favorite mod.</span></h1><p>Simple community sharing for Minecraft Bedrock mods.</p><div class="controls"><input class="search" id="search" type="search" placeholder="Search name, description, author, or category" aria-label="Search mods"><button class="button" id="refreshBtn" type="button">Refresh</button></div><p class="muted" id="status" role="status">Loading mods…</p></section>
+    <section class="section"><div class="section-title"><h2>Mods</h2><span class="muted" id="count"></span></div><div class="grid" id="modsGrid"></div></section>
   </main>
-
-  <footer class="footer">
-    <div class="wrap footerin">
-      <div>
-        <a class="brand" href="#home"><span class="brandmark">✦</span> VOXEL</a>
-        <p style="margin:10px 0 0">Explore The Mod Galaxy</p>
-      </div>
-      <div>
-        <a href="#mods">Explore</a>
-      </div>
-    </div>
-  </footer>
-
-  <div class="modalback" id="modalBack">
-    <div class="modal">
-      <div class="modalhead">
-        <h2 id="modalTitle">Mod details</h2>
-        <button class="close" id="modalClose" aria-label="Close">×</button>
-      </div>
-      <div class="modalcontent" id="modalContent"></div>
-    </div>
-  </div>
-
-  <div class="toast" id="toast"></div>
-
+  <footer><div class="wrap">VOXEL — community mod sharing.</div></footer>
+  <div class="modal" id="modal" aria-hidden="true"><section class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle"><header class="dialog-head"><h2 id="dialogTitle">Mod details</h2><button class="x" id="closeBtn" aria-label="Close">×</button></header><div class="dialog-body" id="dialogBody"></div></section></div>
+  <div class="toast" id="toast" role="status"></div>
   <script>
     'use strict';
     const SUPABASE_URL='https://iiwqjdcbpgggtdgvvepj.supabase.co';
-    const SUPABASE_ANON_KEY='sb_publishable_xL0llFesqeefrm03syTQew_jby4FhJp';
-    const ADMIN_FUNCTION_URL=SUPABASE_URL+'/functions/v1/admin';
-    const ADMIN_CODE='voxeladmin';
-    const CATEGORIES=[['Furniture','🪑'],['Utility','🧰'],['Visual','✨'],['Mobs','🐉'],['Weapons','⚔️'],['World Generation','🌌'],['Technology','⚙️']];
-    const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
-    let mods=[],ratings=[],comments=[],activeCategory='',activeSearch='',activeMod=null,editingMod=null;
-    const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-    function toast(msg){const el=$('#toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3200)}
-    function imageOr(url,kind='icon'){return url||`https://placehold.co/${kind==='banner'?'900x360':'160x160'}/171c36/a9b8e9?text=VOXEL`}
-    function avgFor(id){const rows=ratings.filter(r=>String(r.mod_id)===String(id));return rows.length?rows.reduce((a,r)=>a+Number(r.rating),0)/rows.length:0}
-    function countFor(id){return ratings.filter(r=>String(r.mod_id)===String(id)).length}
-    function card(m){const avg=avgFor(m.id);return `<article class="card"><div class="cardimg" data-open="${esc(m.id)}"><img src="${esc(imageOr(m.banner_url,'banner'))}" alt="${esc(m.name)}" loading="lazy"></div><div class="cardbody"><div class="meta"><span>${esc(m.category||'General')}</span><span class="pill">${Number(m.downloads||0).toLocaleString()} downloads</span></div><h3>${esc(m.name)}</h3><p style="color:var(--muted);margin:0;line-height:1.6;">${esc(m.description||'No description available.')}</p><div class="meta-row"><span class="rating"><span class="star">★</span> ${avg.toFixed(1)}</span><span>${esc(m.author||'Unknown')}</span></div></div></article>`}
-    function renderCards(target,list){const el=$(target);el.innerHTML=list.length?list.map(card).join(''):'<div class="empty">No mods found. Try a different search or category.</div>'}
-    function sorted(list,sort){const a=[...list];if(sort==='downloads')a.sort((x,y)=>(y.downloads||0)-(x.downloads||0));else if(sort==='rating')a.sort((x,y)=>avgFor(y.id)-avgFor(x.id));else if(sort==='trending')a.sort((x,y)=>(Number(y.trending||0)-Number(x.trending||0))||(y.downloads||0)-(x.downloads||0));else if(sort==='newest')a.sort((x,y)=>new Date(y.created_at||0)-new Date(x.created_at||0));return a}
-    function filtered(){const q=activeSearch.toLowerCase();return mods.filter(m=>(!activeCategory||m.category===activeCategory)&&(!q||[m.name,m.description,m.author,m.category,(m.tags||[]).join(' ')].join(' ').toLowerCase().includes(q)))}
-    function draw(){const list=filtered(),sort=$('#sortSelect').value;renderCards('#modsGrid',sorted(list,sort));$('#listingTitle').textContent=(activeCategory||activeSearch)?'Search results':'Explore Mods';$('#resultCount').textContent=`${list.length} mod${list.length===1?'':'s'} found`;}
-    function drawCategories(){const g=$('#catGrid');g.innerHTML=CATEGORIES.map(([name,icon])=>`<button class="cat ${activeCategory===name?'active':''}" data-cat="${esc(name)}"><span>${icon}</span><b>${esc(name)}</b></button>`).join('')}
-    async function loadData(){try{const [m,r]=await Promise.all([db.from('mods').select('*').order('created_at',{ascending:false}),db.from('ratings').select('mod_id,rating')]);if(m.error)throw m.error;if(r.error)throw r.error;mods=m.data||[];ratings=r.data||[];draw();renderCards('#trendingGrid',sorted(mods.filter(m=>m.trending), 'trending').slice(0,4));renderCards('#newGrid',sorted(mods,'newest').slice(0,4));renderCards('#favoriteGrid',[...mods].sort((a,b)=>avgFor(b.id)-avgFor(a.id)).slice(0,4));const f=mods.find(m=>m.featured)||sorted(mods,'downloads')[0];if(f){$('#featureName').textContent=f.name;$('#featureTag').textContent=f.category||'Featured';$('#weekly').innerHTML=`<div class="card" style="grid-column:1/-1"><div class="cardimg"><img src="${esc(imageOr(f.banner_url,'banner'))}" alt="${esc(f.name)} banner"></div><div class="cardbody"><div class="meta"><span>${esc(f.category||'General')}</span><span class="pill">${Number(f.downloads||0).toLocaleString()} downloads</span></div><h3>${esc(f.name)}</h3><p style="color:var(--muted);margin:8px 0 0;line-height:1.6;">${esc(f.description||'No description available.')}</p></div></div>`}}
-    catch(err){toast('Could not load mods.');console.error(err)}}
-    function openModal(title,html){$('#modalTitle').textContent=title;$('#modalContent').innerHTML=html;$('#modalBack').classList.add('open');$('#modalBack').scrollTop=0}
-    function closeModal(){$('#modalBack').classList.remove('open');activeMod=null;editingMod=null}
-
-    function commentHtml(c){return `<div class="comment"><b>${esc(c.name)}</b><small>${new Date(c.created_at).toLocaleDateString()}</small><p>${esc(c.body)}</p>${c.name === 'admin' ? `<button class="textlink" data-del-comment="${esc(c.id)}" type="button">Delete</button>` : ''}</div>`}
-
-    async function showMod(id){const m=mods.find(x=>String(x.id)===String(id));if(!m)return;activeMod=m;const {data:commentsData,error}=await db.from('comments').select('*').eq('mod_id',m.id).order('created_at',{ascending:false});if(error){console.error(error);toast('Comments failed to load.');}comments=commentsData||[];const html=`<div class="mod-detail"><img src="${esc(imageOr(m.banner_url,'banner'))}" alt="${esc(m.name)}"><div class="mod-info"><h3>${esc(m.name)}</h3><div class="meta"><span>${esc(m.category||'General')}</span><span>${esc(m.author||'Unknown')}</span></div><p>${esc(m.description||'No description available.')}</p><div class="actions"><button class="action-btn primary" id="downloadBtn" type="button">Download</button><button class="action-btn" id="editModBtn" type="button">Edit</button><button class="action-btn" id="deleteModBtn" type="button">Delete</button></div><div class="actions">${Array.from({length:5},(_,i)=>`<button class="action-btn" data-rate="${i+1}" type="button">${'★'.repeat(i+1)}</button>`).join('')}</div></div></div><div style="margin-top:18px;"><h3>Comments</h3>${comments.length?comments.map(commentHtml).join(''): '<div class="empty">No comments yet.</div>'}</div><form id="commentForm" style="margin-top:16px;"><div class="form-grid"><div class="field"><label>Name</label><input name="name" required></div><div class="field"><label>Comment</label><textarea name="body" required></textarea></div></div><div class="actions"><button class="action-btn primary" type="submit">Post Comment</button></div></form>`;openModal(m.name,html);$('#downloadBtn').onclick=()=>downloadMod(m);$('#editModBtn').onclick=()=>adminGate('edit',m);$('#deleteModBtn').onclick=()=>adminGate('delete',m);document.querySelectorAll('[data-rate]').forEach(btn=>btn.onclick=()=>rateMod(m,Number(btn.dataset.rate)));$('#commentForm').onsubmit=postComment;document.querySelectorAll('[data-del-comment]').forEach(btn=>btn.onclick=async()=>{const id=btn.dataset.delComment;const {error}=await db.from('comments').delete().eq('id',id);if(error){toast('Delete failed.');return}toast('Comment deleted.');showMod(m.id);})}
-    async function downloadMod(m){if(!m.file_url){toast('No download file is available for this mod.');return}try{await db.from('mods').update({downloads:Number(m.downloads||0)+1}).eq('id',m.id);m.downloads=(Number(m.downloads||0)+1);window.open(m.file_url,'_blank');toast('Download started.');}catch(err){console.error(err);toast('Download failed.')}}
-    async function rateMod(m,rating){const {error}=await db.from('ratings').insert({mod_id:m.id,rating});if(error){toast('Rating failed: '+error.message);return}const {data}=await db.from('ratings').select('mod_id,rating');if(data){ratings=data;toast('Thanks for rating.');showMod(m.id);}}
-    async function postComment(e){e.preventDefault();const form=new FormData(e.currentTarget);const name=String(form.get('name')||'').trim();const body=String(form.get('body')||'').trim();if(!name||!body){toast('Please fill in both fields.');return}const {error}=await db.from('comments').insert({mod_id:activeMod.id,name,body});if(error){toast('Comment failed: '+error.message);return}toast('Comment posted.');showMod(activeMod.id);} 
-
-    async function adminRequest(form){
-      const data = new FormData(form);
-      data.set('code', ADMIN_CODE);
-      if (typeof editingMod?.id !== 'undefined' && !data.has('id')) data.set('id', String(editingMod.id));
-      const res = await fetch(ADMIN_FUNCTION_URL,{method:'POST',headers:{'apikey':SUPABASE_ANON_KEY},body:data});
-      let payload={};try{payload=await res.json()}catch{};
-      if(!res.ok){throw new Error(payload.error || 'Admin request failed.');}
-      return payload;
-    }
-
-    function adminGate(action,m=null){editingMod=m;const title=action==='upload'?'Upload a mod':action==='edit'?'Edit mod':'Delete mod';const mode=action==='delete' ? 'delete' : action;
-      openModal(title,`
-        <p class="hint">Admin access requires the configured ${esc(ADMIN_CODE)} code in the edge function. This front-end form sends the code automatically.</p>
-        <form id="adminForm">
-          <input type="hidden" name="action" value="${esc(mode)}">
-          <input type="hidden" name="code" value="${esc(ADMIN_CODE)}">
-          ${m ? `<input type="hidden" name="id" value="${esc(m.id)}">` : ''}
-          ${(action==='upload'||action==='edit')?`
-            <div class="form-grid">
-              <div class="field"><label>Name</label><input name="name" value="${esc(m?.name||'')}" required></div>
-              <div class="field"><label>Author</label><input name="author" value="${esc(m?.author||'')}" required></div>
-              <div class="field"><label>Category</label><select name="category">
-                ${CATEGORIES.map(([name])=>`<option value="${esc(name)}" ${m?.category===name?'selected':''}>${esc(name)}</option>`).join('')}
-              </select></div>
-              <div class="field"><label>Tags</label><input name="tags" value="${esc((m?.tags||[]).join(', '))}"></div>
-              <div class="field full"><label>Description</label><textarea name="description" required>${esc(m?.description||'')}</textarea></div>
-              <div class="field"><label>File</label><input type="file" name="file" accept=".mcaddon,.mcpack,.zip,.rar,.json"></div>
-              <div class="field"><label>Icon</label><input type="file" name="icon" accept="image/*"></div>
-              <div class="field"><label>Banner</label><input type="file" name="banner" accept="image/*"></div>
-              <div class="field"><label>Featured</label><input type="checkbox" name="featured" ${m?.featured?'checked':''}></div>
-              <div class="field"><label>Trending</label><input type="checkbox" name="trending" ${m?.trending?'checked':''}></div>
-              <div class="field"><label>Downloads</label><input type="number" name="downloads" value="${esc(m?.downloads||0)}"></div>
-            </div>
-          `: ''}
-          ${(action==='delete')?`<p class="hint">This deletes the mod and its related comments/ratings.</p>`:''}
-          <div class="actions" style="margin-top:16px;"><button class="action-btn primary" type="submit">${action==='upload'?'Upload Mod':action==='edit'?'Save Mod':'Delete Mod'}</button></div>
-        </form>`);
-      $('#adminForm').onsubmit=async e=>{e.preventDefault();const form=new FormData(e.currentTarget);const payload = form;payload.set('code', ADMIN_CODE);try{const res = await adminRequest(e.currentTarget);toast(action==='delete'?'Mod deleted.':'Mod saved.');closeModal();await loadData();}catch(err){toast(err.message || 'Admin action failed.');console.error(err);}}
-    }
-
-    $('#adminBtn').onclick=()=>adminGate('upload');
-    $('#refreshBtn').onclick=loadData;
-    $('#modalClose').onclick=closeModal;
-    $('#modalBack').onclick=e=>{if(e.target===$('#modalBack'))closeModal()};
-    $('#sortSelect').onchange=()=>draw();
-    document.addEventListener('click',e=>{const btn=e.target.closest('[data-open]');if(btn){showMod(btn.dataset.open)}});
-    document.addEventListener('click',e=>{const cat=e.target.closest('[data-cat]');if(cat){activeCategory=cat.dataset.cat;drawCategories();draw();}});
-    document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
-    loadData();
+    // Use the project's Supabase publishable (anon) key here. This is safe to expose;
+    // authorization is enforced by database policies and the server-side Edge Function.
+    const SUPABASE_PUBLISHABLE_KEY='sb_publishable_xL0llFesqeefrm03syTQew_jby4FhJp';
+    const ADMIN_URL=`${SUPABASE_URL}/functions/v1/admin`;
+    const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+    const $=s=>document.querySelector(s);
+    const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const placeholder='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="500" height="280" viewBox="0 0 500 280"%3E%3Crect width="500" height="280" fill="%231a2238"/%3E%3Ctext x="50%25" y="50%25" fill="%23aab4ce" font-size="24" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif"%3EVOXEL%3C/text%3E%3C/svg%3E';
+    let mods=[];
+    function toast(message){const el=$('#toast');el.textContent=message;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),3500)}
+    function safeImage(url){return url||placeholder}
+    function openModal(title,html){$('#dialogTitle').textContent=title;$('#dialogBody').innerHTML=html;$('#modal').classList.add('open');$('#modal').setAttribute('aria-hidden','false')}
+    function closeModal(){$('#modal').classList.remove('open');$('#modal').setAttribute('aria-hidden','true');$('#dialogBody').innerHTML=''}
+    function modCard(m){return `<article class="card"><img class="cover" src="${esc(safeImage(m.banner_url))}" alt="${esc(m.name)} banner" onerror="this.src='${placeholder}'"><div class="card-content"><div class="identity"><img class="icon" src="${esc(safeImage(m.icon_url))}" alt="${esc(m.name)} icon" onerror="this.src='${placeholder}'"><div><h3 class="title">${esc(m.name)}</h3><div class="meta">by ${esc(m.author||'Unknown')}</div></div></div><p class="description">${esc(m.description||'No description provided.')}</p><div class="meta"><span>${esc(m.category||'Uncategorized')}</span><span>${Number(m.downloads||0).toLocaleString()} downloads</span></div><div class="card-actions"><button class="button primary" data-download="${esc(m.id)}" type="button">Download</button><button class="button" data-view="${esc(m.id)}" type="button">View</button></div></div></article>`}
+    function render(){const q=$('#search').value.trim().toLowerCase();const found=mods.filter(m=>[m.name,m.description,m.author,m.category].some(v=>String(v||'').toLowerCase().includes(q)));$('#count').textContent=`${found.length} mod${found.length===1?'':'s'}`;$('#modsGrid').innerHTML=found.length?found.map(modCard).join(''):'<div class="empty">No mods found. Try another search or upload the first mod.</div>'}
+    async function loadMods(){ $('#status').textContent='Loading mods…';const {data,error}=await db.from('mods').select('id,name,description,category,version,author,icon_url,banner_url,file_url,file_path,downloads,created_at').order('created_at',{ascending:false});if(error){console.error(error);$('#status').innerHTML=`<span class="error">Could not load mods. Check Supabase setup and read policies.</span>`;return}mods=data||[];$('#status').textContent='';render() }
+    function requireAdminCode(){const code=window.prompt('Enter admin code to continue:');if(code===null)return null;if(!code.trim()){toast('Admin code is required.');return null}return code.trim()}
+    function adminFormData(form,code){const data=new FormData(form);data.set('admin_code',code);return data}
+    async function adminRequest(form,code){const data=adminFormData(form,code);const response=await fetch(ADMIN_URL,{method:'POST',headers:{'apikey':SUPABASE_PUBLISHABLE_KEY},body:data});let result={};try{result=await response.json()}catch{}if(!response.ok)throw new Error(result.error||`Admin request failed (${response.status}).`);return result}
+    function uploadForm(mod=null){const isEdit=Boolean(mod);const categories=['Add-ons','Behavior Packs','Resource Packs','Worlds','Tools','Other'];return `<form id="modForm"><div class="form-grid"><div class="form-field"><label for="name">Mod name *</label><input class="field" id="name" name="name" maxlength="120" value="${esc(mod?.name||'')}" required></div><div class="form-field"><label for="author">Author</label><input class="field" id="author" name="author" maxlength="120" value="${esc(mod?.author||'')}"></div><div class="form-field"><label for="category">Category</label><select class="field" id="category" name="category">${categories.map(c=>`<option ${mod?.category===c?'selected':''}>${esc(c)}</option>`).join('')}</select></div><div class="form-field"><label for="version">Version</label><input class="field" id="version" name="version" maxlength="40" value="${esc(mod?.version||'')}"></div><div class="form-field full"><label for="description">Description</label><textarea class="field" id="description" name="description" maxlength="10000">${esc(mod?.description||'')}</textarea></div><div class="form-field"><label for="icon_file">Icon image ${isEdit?'(optional replacement)':'(optional)'}</label><input class="field" id="icon_file" name="icon_file" type="file" accept="image/*"></div><div class="form-field"><label for="banner_file">Banner image ${isEdit?'(optional replacement)':'(optional)'}</label><input class="field" id="banner_file" name="banner_file" type="file" accept="image/*"></div><div class="form-field full"><label for="mod_file">Mod file ${isEdit?'(optional replacement)':'(.mcpack, .mcaddon, or .zip required)'}</label><input class="field" id="mod_file" name="mod_file" type="file" accept=".mcpack,.mcaddon,.zip" ${isEdit?'':'required'}><span class="help">Maximum upload size: 100 MB.</span></div></div><div class="card-actions"><button class="button primary" type="submit">${isEdit?'Save changes':'Upload mod'}</button></div></form>`}
+    function promptUpload(){const code=requireAdminCode();if(!code)return;openModal('Upload a mod',uploadForm());$('#modForm').onsubmit=async e=>{e.preventDefault();const button=e.submitter;button.disabled=true;try{const data=new FormData(e.currentTarget);data.set('action','upload');data.set('admin_code',code);await adminRequest({elements:[]},code).catch(()=>{}); // replaced below with direct multipart request
+        const response=await fetch(ADMIN_URL,{method:'POST',headers:{'apikey':SUPABASE_PUBLISHABLE_KEY},body:data});let result={};try{result=await response.json()}catch{}if(!response.ok)throw new Error(result.error||'Upload failed.');toast('Mod uploaded.');closeModal();await loadMods()}catch(err){toast(err.message);button.disabled=false}}}
+    function showDetails(id){const m=mods.find(x=>String(x.id)===String(id));if(!m)return;openModal(m.name,`<img class="detail-banner" src="${esc(safeImage(m.banner_url))}" alt="${esc(m.name)} banner" onerror="this.src='${placeholder}'"><div class="detail-top"><img class="icon" src="${esc(safeImage(m.icon_url))}" alt="${esc(m.name)} icon" onerror="this.src='${placeholder}'"><div><h3 class="title">${esc(m.name)}</h3><div class="meta">by ${esc(m.author||'Unknown')} · ${esc(m.category||'Uncategorized')}</div></div></div><p class="detail-description">${esc(m.description||'No description provided.')}</p><p class="meta">Version: ${esc(m.version||'Not specified')} · ${Number(m.downloads||0).toLocaleString()} downloads</p><div class="card-actions"><button class="button primary" id="detailDownload" type="button">Download</button><button class="button" id="editBtn" type="button">Edit</button><button class="button danger" id="deleteBtn" type="button">Delete</button></div>`);$('#detailDownload').onclick=()=>downloadMod(m);$('#editBtn').onclick=()=>editMod(m);$('#deleteBtn').onclick=()=>deleteMod(m)}
+    async function downloadMod(m){if(!m.file_url){toast('No file is attached to this mod.');return}const {error}=await db.rpc('increment_mod_downloads',{p_mod_id:String(m.id)});if(error){console.error(error);toast('Download count could not be updated. Check the SQL setup.');return}m.downloads=Number(m.downloads||0)+1;render();const link=document.createElement('a');link.href=m.file_url;link.download='';link.rel='noopener';document.body.append(link);link.click();link.remove();toast('Download started.')}
+    async function editMod(m){const code=requireAdminCode();if(!code)return;openModal('Edit mod',uploadForm(m));$('#modForm').onsubmit=async e=>{e.preventDefault();const button=e.submitter;button.disabled=true;const data=new FormData(e.currentTarget);data.set('action','edit');data.set('id',String(m.id));data.set('admin_code',code);try{const response=await fetch(ADMIN_URL,{method:'POST',headers:{'apikey':SUPABASE_PUBLISHABLE_KEY},body:data});let result={};try{result=await response.json()}catch{}if(!response.ok)throw new Error(result.error||'Edit failed.');toast('Mod updated.');closeModal();await loadMods()}catch(err){toast(err.message);button.disabled=false}}}
+    async function deleteMod(m){const code=requireAdminCode();if(!code)return;if(!window.confirm(`Permanently delete “${m.name}” and its uploaded files?`))return;const data=new FormData();data.set('action','delete');data.set('id',String(m.id));data.set('admin_code',code);try{const response=await fetch(ADMIN_URL,{method:'POST',headers:{'apikey':SUPABASE_PUBLISHABLE_KEY},body:data});let result={};try{result=await response.json()}catch{}if(!response.ok)throw new Error(result.error||'Delete failed.');toast('Mod deleted.');closeModal();await loadMods()}catch(err){toast(err.message)}}
+    $('#uploadBtn').addEventListener('click',promptUpload);$('#refreshBtn').addEventListener('click',loadMods);$('#search').addEventListener('input',render);$('#closeBtn').addEventListener('click',closeModal);$('#modal').addEventListener('click',e=>{if(e.target===$('#modal'))closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});document.addEventListener('click',e=>{const download=e.target.closest('[data-download]');if(download){const mod=mods.find(m=>String(m.id)===download.dataset.download);if(mod)downloadMod(mod);return}const view=e.target.closest('[data-view]');if(view)showDetails(view.dataset.view)});
+    loadMods();
   </script>
 </body>
 </html>
