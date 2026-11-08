@@ -1,39 +1,26 @@
-# VOXEL
+# GYMTRACK
 
-A small static HTML/CSS/JavaScript Minecraft Bedrock mod sharing site backed by Supabase.
+GYMTRACK is a responsive gymnastics training journal and community workspace, implemented as a static HTML/CSS/JavaScript website.
 
-## Configure Supabase
+## Run it
 
-1. In Supabase, run [`supabase/voxel.sql`](supabase/voxel.sql) in **SQL Editor**. This creates/adds the `mods` columns, enables public reads, creates an atomic download counter RPC, and creates the public `mods` Storage bucket. It does not grant anonymous database writes or Storage uploads.
-2. In `index.html`, replace `SUPABASE_PUBLISHABLE_KEY` with your project's publishable/anon key if it differs. A publishable key is expected to be public; never use a service-role key in the browser.
-3. Install and log in to the Supabase CLI, link the project, and set a server-side admin secret. The admin code is never embedded in the site source.
+Open `index.html` in a modern browser or serve the repository with any static web host. No build step, server, third-party account, or database setup is required.
 
-```sh
-supabase login
-supabase link --project-ref iiwqjdcbpgggtdgvvepj
-supabase secrets set ADMIN_CODE='voxeladmin'
-```
+## Working features
 
-For production, choose a long unique secret instead of `voxeladmin`, and enter that same secret in the prompts on the website. Optionally restrict browser origins:
+- Dashboard with live totals, a daily motivational message, recent practice, tracked skills, posts, and saved videos.
+- Practice journal with create, edit, delete, dates, duration, skills, strength/flexibility minutes, and notes.
+- Skill tracker for Floor, Beam, Bars, Vault, Tumbling, and Flexibility, with four progress states and visual progress indicators.
+- Goals with editable completion percentage and one-click 10% progress updates.
+- YouTube video library with URL validation, thumbnails, categories, and an embedded player.
+- Articles with topics, create/edit/delete, and a readable article view.
+- Community posts with types, likes, and comments.
+- Statistics computed from actual saved practice and skill records, with weekly/monthly activity charts.
+- Calendar showing logged training days and the practice details for a selected date.
+- Search across skills, videos, articles, and posts.
 
-```sh
-supabase secrets set ALLOWED_ORIGIN='https://your-site.example'
-```
+## Data and privacy
 
-Deploy the Edge Function:
+The site saves records in this browser's `localStorage` under `gymtrack-v1`; data remains after refresh and is not sent to a server. This build does not provide sign-in, cloud synchronization, or cross-device sharing. Clearing site data or changing browsers/devices can remove or hide these records, so do not treat browser storage as a backup. Community posts, likes, and comments are local to the same browser profile. Use the same browser profile to continue your journal.
 
-```sh
-supabase functions deploy admin --no-verify-jwt
-```
-
-`--no-verify-jwt` allows this function to receive the site's publishable key without requiring user accounts. The function independently validates `admin_code` for every upload, edit, and delete, and uses the server-side `SUPABASE_SERVICE_ROLE_KEY`; never expose that key. Supabase supplies `SUPABASE_URL`; if your project runtime does not provide `SUPABASE_SERVICE_ROLE_KEY` automatically, set it as a function secret from the project's service-role key:
-
-```sh
-supabase secrets set SUPABASE_SERVICE_ROLE_KEY='YOUR_SERVICE_ROLE_KEY'
-```
-
-## Use
-
-Serve `index.html` from any static web host or open it locally. Search is client-side over public mod records. Upload, edit, and delete ask for the admin code; mod files must end in `.mcpack`, `.mcaddon`, or `.zip` and each uploaded object is limited to 100 MiB. Downloads use public Storage URLs and atomically increment the database count via `increment_mod_downloads`.
-
-The `mods` bucket is public so anyone can retrieve uploaded content. The service-role key and admin secret remain server-side. Do not add anonymous insert/update/delete policies to the `mods` table or write policies to the `mods` bucket.
+No example user records are preloaded: dashboard numbers, charts, calendar marks, and feed content are derived from information the user actually adds. The motivational messages are built-in copy, not user records.
